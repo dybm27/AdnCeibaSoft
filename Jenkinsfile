@@ -1,7 +1,7 @@
 pipeline {
   //Donde se va a ejecutar el Pipeline
   agent {
-    label 'Slave_Induccion'
+    label 'Slave_Mac'
   }
 
   //Opciones específicas de Pipeline dentro del Pipeline
@@ -12,7 +12,7 @@ pipeline {
 
   //Una sección que define las herramientas “preinstaladas” en Jenkins
   tools {
-    jdk 'JDK8_Centos'
+    jdk 'JDK8_Mac'
   }
 
   //Aquí comienzan los “items” del Pipeline
@@ -24,12 +24,18 @@ pipeline {
       }
     }  
 
+    stage('Build') {
+      steps {
+        echo "------------>Build<------------"
+        sh './gradlew --b ./build.gradle build -x test'
+      }
+    }
+
     stage('Compile & Unit Tests') {
       steps{
         echo "------------>Compile & Unit Tests<------------"
         sh 'chmod +x gradlew'
         sh './gradlew --b ./build.gradle test'
-
       }
     }
 
@@ -41,13 +47,6 @@ sh "${tool name: 'SonarScanner', type:'hudson.plugins.sonar.SonarRunnerInstallat
         }
       }
     }
-
-    stage('Build') {
-      steps {
-        echo "------------>Build<------------"
-        sh 'gradle --b ./build.gradle build -x test'
-      }
-    }  
   }
 
   post {
