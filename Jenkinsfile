@@ -17,12 +17,6 @@ pipeline {
 
   //Aquí comienzan los “items” del Pipeline
   stages{
-    stage('Checkout') {
-      steps{
-        echo "------------>Checkout<------------"
-      }
-    }
-    
     stage('Clean') {
       steps {
         echo "------------>Clean<------------"
