@@ -27,15 +27,14 @@ pipeline {
     stage('Build') {
       steps {
         echo "------------>Build<------------"
-        sh './gradlew --b ./build.gradle build -x test'
+        sh './gradlew build -x test'
       }
     }
 
-    stage('Compile & Unit Tests') {
+    stage('Unit Tests') {
       steps{
-        echo "------------>Compile & Unit Tests<------------"
-        sh 'chmod +x gradlew'
-        sh './gradlew --b ./build.gradle test'
+        echo "------------>Unit Tests<------------"
+        sh './gradlew --build-cache test'
       }
     }
 
