@@ -10,8 +10,9 @@ import com.example.domain.repository.CarRepository
 import com.example.domain.repository.MotorcycleRepository
 import com.example.domain.today
 import java.util.*
+import javax.inject.Inject
 
-class ParkingService(
+class ParkingService @Inject constructor(
     private val carRepository: CarRepository,
     private val motorcycleRepository: MotorcycleRepository
 ) {
@@ -28,12 +29,8 @@ class ParkingService(
         const val NOT_AUTHORIZED_ENTER_MESSAGE = "No esta autorizado para ingresar."
     }
 
-    fun getVehicles(): List<Vehicle> {
-        return listOf()
-    }
-
     fun saveCar(car: Car, today: Int = today()) {
-        val numberOfCar = 0
+        val numberOfCar = getAmountCars()
         if (numberOfCar == MAX_CAR) {
             throw DomainException(NOT_AVAILABLE_SPACE_MESSAGE)
         } else if (parking.validateLicensePlateAndDay(car, today)) {
@@ -43,7 +40,7 @@ class ParkingService(
     }
 
     fun saveMotorcycle(motorcycle: Motorcycle, today: Int = today()) {
-        val numberOfMotorcycle = 0
+        val numberOfMotorcycle = getAmountMotorcycles()
         if (numberOfMotorcycle == MAX_MOTORCYCLE) {
             throw DomainException(NOT_AVAILABLE_SPACE_MESSAGE)
         } else if (parking.validateLicensePlateAndDay(motorcycle, today)) {
@@ -76,4 +73,15 @@ class ParkingService(
             motorcycle.isSurplus
         )
     }
+
+    fun getVehicles(): List<Vehicle> {
+        val vehiclesList = mutableListOf<Vehicle>()
+        vehiclesList.addAll(carRepository.getCars())
+        vehiclesList.addAll(motorcycleRepository.getMotorcycles())
+        return vehiclesList
+    }
+
+    fun getAmountCars(): Int = carRepository.getAmountCars()
+
+    fun getAmountMotorcycles(): Int = motorcycleRepository.getAmountMotorcycles()
 }

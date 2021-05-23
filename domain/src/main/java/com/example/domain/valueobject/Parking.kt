@@ -18,9 +18,9 @@ class Parking {
             "La fecha de salida no puede ser menor a la de ingreso."
     }
 
-    fun validateLicensePlateAndDay(vehicle: Vehicle, today: Int): Boolean {
-        return vehicle.isLicensePlateStartsA && (today == sunday || today == monday)
-    }
+    fun validateLicensePlateAndDay(vehicle: Vehicle, today: Int): Boolean =
+        vehicle.isLicensePlateStartsA && (today == sunday || today == monday)
+
 
     fun calculateTotalValue(
         vehicle: Vehicle,
