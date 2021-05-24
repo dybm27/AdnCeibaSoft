@@ -9,10 +9,10 @@ import com.example.domain.entity.Vehicle
 import com.example.domain.exception.DomainException
 import com.example.domain.service.ParkingService
 import com.example.domain.valueobject.Parking
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import java.text.SimpleDateFormat
 import java.util.*
 
 class ParkingTest {

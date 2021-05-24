@@ -1,6 +1,5 @@
 package com.example.domain
 
-import com.example.domain.databuilder.VehicleTestDataBuilder
 import org.junit.Assert
 import org.junit.Test
 import java.text.SimpleDateFormat
