@@ -44,10 +44,16 @@ class Parking {
             else -> {
                 val days = amountHours / payDay
                 val hours = amountHours % payDay
-                value += if (hours < hourlyPay) {
-                    (days * priceDay) + (hours * priceHour)
-                } else {
-                    (days + 1) * priceDay
+                value += when {
+                    hours == 0 -> {
+                        (days * priceDay)
+                    }
+                    hours < hourlyPay -> {
+                        (days * priceDay) + (hours * priceHour)
+                    }
+                    else -> {
+                        (days + 1) * priceDay
+                    }
                 }
             }
         }

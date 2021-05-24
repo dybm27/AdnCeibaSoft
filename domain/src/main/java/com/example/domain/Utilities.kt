@@ -8,19 +8,17 @@ fun getCurrentDateTime(): Date {
 }
 
 fun today(): Int {
-    val formatter = SimpleDateFormat("E", Locale.getDefault())
-    var day = 0
-    when (formatter.format(getCurrentDateTime())) {
-        "Mon" -> day = 1
-        "Tue" -> day = 2
-        "Wed" -> day = 3
-        "Thu" -> day = 4
-        "Fri" -> day = 5
-        "Sat" -> day = 6
-        "Sun" -> day = 7
+    val day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1
+    return if (day == 0) {
+        7
+    } else {
+        day
     }
-    return day
 }
 
+fun createDate(date: String): Date {
+    val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+    return simpleDateFormat.parse(date)!!
+}
 
 
