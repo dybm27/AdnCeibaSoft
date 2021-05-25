@@ -9,14 +9,14 @@ import com.example.infrastructure.database.entity.CarEntity
 @Dao
 interface CarDao {
     @Insert
-    suspend fun saveCar(carEntity: CarEntity)
+    fun saveCar(carEntity: CarEntity)
 
     @Query("SELECT * FROM car")
-    suspend fun getListCars(): List<CarEntity>
+    fun getListCars(): List<CarEntity>
 
     @Delete
-    suspend fun deleteCar(carEntity: CarEntity)
+    fun deleteCar(carEntity: CarEntity)
 
     @Query("SELECT COUNT(*) FROM car")
-    suspend fun getCountCars(): Int
+    fun getCountCars(): Int
 }

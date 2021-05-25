@@ -9,7 +9,7 @@ import com.example.domain.getCurrentDateTime
 import com.example.domain.repository.CarRepository
 import com.example.domain.repository.MotorcycleRepository
 import com.example.domain.today
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 class ParkingService @Inject constructor(
