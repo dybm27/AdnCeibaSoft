@@ -41,7 +41,7 @@ pipeline {
     stage('Functional Tests') {
       steps{
           echo "------------>Functional Tests<------------"
-          sh './gradlew --build-cache connectedAndroidTest'
+         // sh './gradlew --build-cache connectedAndroidTest'
       }
     }
 
