@@ -38,6 +38,13 @@ pipeline {
       }
     }
 
+    stage('Functional Tests') {
+      steps{
+          echo "------------>Functional Tests<------------"
+          sh './gradlew --build-cache connectedAndroidTest'
+      }
+    }
+
     stage('Static Code Analysis') {
       steps{
         echo '------------>Análisis de código estático<------------'
