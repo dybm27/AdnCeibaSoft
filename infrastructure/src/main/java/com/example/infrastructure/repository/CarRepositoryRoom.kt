@@ -1,33 +1,39 @@
 package com.example.infrastructure.repository
 
+import android.content.Context
 import com.example.domain.entity.Car
 import com.example.domain.repository.CarRepository
 import com.example.infrastructure.anticorruption.CarTranslator
+import com.example.infrastructure.database.ParkingDatabase
 import com.example.infrastructure.database.dao.CarDao
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
-class CarRepositoryRoom @Inject constructor(private val carDao: CarDao) : CarRepository {
+class CarRepositoryRoom @Inject constructor(@ApplicationContext private val context: Context) :
+    CarRepository {
+
+    val database = ParkingDatabase.get(context)
 
     override fun getCars(): List<Car> {
         val listCar = mutableListOf<Car>()
         listCar.addAll(
-            CarTranslator.fromListEntityToListDomain(carDao.getListCars())
+            CarTranslator.fromListEntityToListDomain(database.carDao().getListCars())
         )
         return listCar
     }
 
     override fun saveCar(car: Car) =
-        carDao.saveCar(CarTranslator.fromDomainToEntity(car))
+        database.carDao().saveCar(CarTranslator.fromDomainToEntity(car))
 
     override fun deleteCar(car: Car) =
-        carDao.deleteCar(CarTranslator.fromDomainToEntity(car))
+        database.carDao().deleteCar(CarTranslator.fromDomainToEntity(car))
 
 
-    override fun getAmountCars(): Int = carDao.getCountCars()
+    override fun getAmountCars(): Int = database.carDao().getCountCars()
 
     override fun getCar(plate: String): Car? {
-        val car = carDao.getCar(plate)
+        val car = database.carDao().getCar(plate)
         if (car != null) {
             return CarTranslator.fromEntityToDomain(car)
         }
