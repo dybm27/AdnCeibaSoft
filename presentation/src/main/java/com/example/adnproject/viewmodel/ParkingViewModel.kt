@@ -31,41 +31,27 @@ class ParkingViewModel @Inject constructor(
     private val _message = MutableLiveData<String>()
     val message = _message
 
-    companion object{
+    companion object {
         const val VEHICLE_SAVE_MESSAGE = "Vehículo guardado con éxito."
-        const val VEHICLE_NOT_SAVE_MESSAGE = "Ya hay un vehículo con esa placa."
     }
+
     fun saveVehicle(vehicle: Vehicle) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                if (!vehicleExists(vehicle)) {
-                    when (vehicle) {
-                        is Car -> {
-                            parkingService.saveCar(vehicle)
-                        }
-                        is Motorcycle -> {
-                            parkingService.saveMotorcycle(vehicle)
-                        }
+                when (vehicle) {
+                    is Car -> {
+                        parkingService.saveCar(vehicle)
                     }
-                    getVehicles()
-                    message.postValue(VEHICLE_SAVE_MESSAGE)
-                } else {
-                    message.postValue(VEHICLE_NOT_SAVE_MESSAGE)
+                    is Motorcycle -> {
+                        parkingService.saveMotorcycle(vehicle)
+                    }
                 }
+                getVehicles()
+                message.postValue(VEHICLE_SAVE_MESSAGE)
             } catch (e: Exception) {
                 message.postValue(e.message)
             }
         }
-    }
-
-    private fun vehicleExists(vehicle: Vehicle): Boolean {
-        var res = false
-        vehicles.value?.forEach {
-            if (vehicle.licensePlate == it.licensePlate) {
-                res = true
-            }
-        }
-        return res
     }
 
     fun calculateTotalValue(vehicle: Vehicle) {

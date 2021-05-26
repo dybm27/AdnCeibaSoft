@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.adnproject.R
 import com.example.adnproject.databinding.LayoutDialogVehicleBinding
+import com.example.adnproject.toast
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
 import com.example.domain.entity.Vehicle
@@ -46,18 +47,46 @@ class DialogEnterVehicle(private val listener: (vehicle: Vehicle) -> Unit) : Dia
             }
             btnCancel.setOnClickListener { dismiss() }
             btnAdd.setOnClickListener {
-                val vehicle = if (rbCar.isChecked) {
-                    Car(etPlateLicense.text.toString(), getCurrentDateTime())
-                } else {
-                    Motorcycle(
-                        etPlateLicense.text.toString(),
-                        getCurrentDateTime(),
-                        etCylinderCapacity.text.toString().toInt()
-                    )
+                when {
+                    validateIsNullOrEmptyEditText(this) -> {
+                        activity?.toast("Favor digitar los campos.")
+                    }
+                    validateMinValueEditText(this) -> {
+                        activity?.toast("La placa debe ser mínimo de 6 caracteres.")
+                    }
+                    else -> {
+                        val vehicle = if (rbCar.isChecked) {
+                            Car(etPlateLicense.text.toString(), getCurrentDateTime())
+                        } else {
+                            Motorcycle(
+                                etPlateLicense.text.toString(),
+                                getCurrentDateTime(),
+                                etCylinderCapacity.text.toString().toInt()
+                            )
+                        }
+                        listener(vehicle)
+                    }
                 }
-                listener(vehicle)
             }
         }
+    }
+
+    private fun validateMinValueEditText(binding: LayoutDialogVehicleBinding): Boolean =
+        binding.etPlateLicense.text!!.length < 6
+
+    private fun validateIsNullOrEmptyEditText(binding: LayoutDialogVehicleBinding): Boolean {
+        var res = false
+        with(binding) {
+            if (etPlateLicense.text.isNullOrEmpty()) {
+                res = true
+            }
+            if (rbMotocycle.isChecked) {
+                if (etCylinderCapacity.text.isNullOrEmpty()) {
+                    res = true
+                }
+            }
+        }
+        return res
     }
 
     override fun onCreateView(

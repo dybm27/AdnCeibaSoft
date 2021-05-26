@@ -10,4 +10,6 @@ interface CarRepository {
     fun deleteCar(car: Car)
 
     fun getAmountCars(): Int
+
+    fun getCar(plate: String): Car?
 }

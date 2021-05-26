@@ -19,4 +19,7 @@ interface CarDao {
 
     @Query("SELECT COUNT(*) FROM car")
     fun getCountCars(): Int
+
+    @Query("SELECT * FROM car WHERE license_plate = :plate")
+    fun getCar(plate: String): CarEntity?
 }

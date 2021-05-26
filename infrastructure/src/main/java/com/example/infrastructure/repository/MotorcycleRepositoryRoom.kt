@@ -35,4 +35,12 @@ class MotorcycleRepositoryRoom @Inject constructor(private val motorcycleDao: Mo
 
     override fun getAmountMotorcycles(): Int = motorcycleDao.getCountMotorcycles()
 
+    override fun getMotorcycle(plate: String): Motorcycle? {
+        val motorcycle = motorcycleDao.getMotorcycle(plate)
+        if (motorcycle != null) {
+            return MotorcycleTranslator.fromEntityToDomain(motorcycle)
+        }
+        return null
+    }
+
 }

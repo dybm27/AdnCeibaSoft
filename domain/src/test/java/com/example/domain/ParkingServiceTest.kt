@@ -139,4 +139,33 @@ class ParkingServiceTest {
         val vehiclesList = parkingService.getVehicles()
         assertEquals(2, vehiclesList.size)
     }
+
+    @Test
+    fun validateExistingVehicle_motorcycle_isCorrect() {
+        val motorcycle = MotorcycleTestDataBuilder().withLicensePlate("AQW13123").build()
+        `when`(motorcycleRepositoryMock.getAmountMotorcycles())
+            .thenReturn(3)
+        `when`(motorcycleRepositoryMock.getMotorcycle("AQW13123"))
+            .thenReturn(motorcycle)
+        try {
+            parkingService.saveMotorcycle(motorcycle, 2)
+        } catch (e: DomainException) {
+            assertEquals(ParkingService.VEHICLE_NOT_SAVE_MESSAGE, e.message)
+        }
+    }
+
+    @Test
+    fun validateExistingVehicle_car_isCorrect() {
+        val car = CarTestDataBuilder().withLicensePlate("AQW13123").build()
+        `when`(carRepositoryMock.getAmountCars())
+            .thenReturn(3)
+        `when`(carRepositoryMock.getCar("AQW13123"))
+            .thenReturn(car)
+        try {
+            parkingService.saveCar(car, 2)
+        } catch (e: DomainException) {
+            println(e.message)
+            assertEquals(ParkingService.VEHICLE_NOT_SAVE_MESSAGE, e.message)
+        }
+    }
 }

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.adnproject.R
 import com.example.adnproject.databinding.ActivityMainBinding
+import com.example.adnproject.toast
 import com.example.adnproject.view.adapter.VehicleAdapter
 import com.example.adnproject.view.dialog.DialogEnterVehicle
 import com.example.adnproject.viewmodel.ParkingViewModel
@@ -79,20 +80,16 @@ class ParkingActivity : AppCompatActivity() {
                 String.format(getString(R.string.cant_motorcycles), it);
         })
         parkingViewModel.totalValue.observe(this, {
-            showMessage("Valor pagado: $it")
+            toast("Valor pagado: $it")
         })
         parkingViewModel.message.observe(this, {
-            showMessage(it)
+            toast(it)
             if (it == ParkingViewModel.VEHICLE_SAVE_MESSAGE) {
                 if (!validateShowDialog()) {
                     dialogEnterVehicle.dismiss()
                 }
             }
         })
-    }
-
-    private fun showMessage(m: String, duration: Int = Toast.LENGTH_SHORT) {
-        Toast.makeText(this, m, duration).show()
     }
 
     private fun validateShowDialog(): Boolean {

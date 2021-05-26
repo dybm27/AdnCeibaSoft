@@ -25,4 +25,12 @@ class CarRepositoryRoom @Inject constructor(private val carDao: CarDao) : CarRep
 
 
     override fun getAmountCars(): Int = carDao.getCountCars()
+
+    override fun getCar(plate: String): Car? {
+        val car = carDao.getCar(plate)
+        if (car != null) {
+            return CarTranslator.fromEntityToDomain(car)
+        }
+        return null
+    }
 }

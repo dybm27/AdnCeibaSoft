@@ -15,7 +15,7 @@ class MotorcycleTranslator {
             )
         }
 
-        private fun fromEntityToDomain(motorcycle: MotorcycleEntity): Motorcycle {
+        fun fromEntityToDomain(motorcycle: MotorcycleEntity): Motorcycle {
             return Motorcycle(
                 motorcycle.licensePlate,
                 Date(motorcycle.entryDate),

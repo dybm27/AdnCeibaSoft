@@ -9,7 +9,7 @@ class CarTranslator {
         fun fromDomainToEntity(car: Car): CarEntity =
             CarEntity(car.licensePlate, car.entryDate.time)
 
-        private fun fromEntityToDomain(car: CarEntity): Car =
+        fun fromEntityToDomain(car: CarEntity): Car =
             Car(car.licensePlate, Date(car.entryDate))
 
         fun fromListEntityToListDomain(cars: List<CarEntity>): List<Car> {

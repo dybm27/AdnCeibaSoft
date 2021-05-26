@@ -19,4 +19,7 @@ interface MotorcycleDao {
 
     @Query("SELECT COUNT(*) FROM motorcycle")
     fun getCountMotorcycles(): Int
+
+    @Query("SELECT * FROM motorcycle WHERE license_plate = :plate")
+    fun getMotorcycle(plate: String): MotorcycleEntity?
 }

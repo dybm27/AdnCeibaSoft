@@ -10,4 +10,6 @@ interface MotorcycleRepository {
     fun deleteMotorcycle(motorcycle: Motorcycle)
 
     fun getAmountMotorcycles(): Int
+
+    fun getMotorcycle(plate: String): Motorcycle?
 }

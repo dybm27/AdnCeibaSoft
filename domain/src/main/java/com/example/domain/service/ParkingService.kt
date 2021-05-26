@@ -27,6 +27,7 @@ class ParkingService @Inject constructor(
         const val PRICE_DAY_MOTORCYCLE = 4000
         const val NOT_AVAILABLE_SPACE_MESSAGE = "No hay cupo disponible."
         const val NOT_AUTHORIZED_ENTER_MESSAGE = "No esta autorizado para ingresar."
+        const val VEHICLE_NOT_SAVE_MESSAGE = "Ya hay un vehículo con esa placa."
     }
 
     fun saveCar(car: Car, today: Int = today()) {
@@ -35,6 +36,9 @@ class ParkingService @Inject constructor(
             throw DomainException(NOT_AVAILABLE_SPACE_MESSAGE)
         } else if (parking.validateLicensePlateAndDay(car, today)) {
             throw DomainException(NOT_AUTHORIZED_ENTER_MESSAGE)
+        }
+        if (validateExistingVehicle(car)) {
+            throw DomainException(VEHICLE_NOT_SAVE_MESSAGE)
         }
         carRepository.saveCar(car)
     }
@@ -45,6 +49,9 @@ class ParkingService @Inject constructor(
             throw DomainException(NOT_AVAILABLE_SPACE_MESSAGE)
         } else if (parking.validateLicensePlateAndDay(motorcycle, today)) {
             throw DomainException(NOT_AUTHORIZED_ENTER_MESSAGE)
+        }
+        if (validateExistingVehicle(motorcycle)) {
+            throw DomainException(VEHICLE_NOT_SAVE_MESSAGE)
         }
         motorcycleRepository.saveMotorcycle(motorcycle)
     }
@@ -84,4 +91,9 @@ class ParkingService @Inject constructor(
     fun getAmountCars(): Int = carRepository.getAmountCars()
 
     fun getAmountMotorcycles(): Int = motorcycleRepository.getAmountMotorcycles()
+
+    private fun validateExistingVehicle(vehicle: Vehicle): Boolean =
+        motorcycleRepository.getMotorcycle(vehicle.licensePlate) != null || carRepository.getCar(
+            vehicle.licensePlate
+        ) != null
 }
