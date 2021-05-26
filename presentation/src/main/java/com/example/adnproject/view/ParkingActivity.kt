@@ -61,14 +61,14 @@ class ParkingActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        parkingViewModel.vehicles.observe(this, {
-            if (it.isEmpty()) {
+        parkingViewModel.vehicles.observe(this, { list ->
+            if (list.isEmpty()) {
                 binding.tvEmptyView.visibility = View.VISIBLE
                 binding.rvVehicles.visibility = View.INVISIBLE
             } else {
                 binding.tvEmptyView.visibility = View.GONE
                 binding.rvVehicles.visibility = View.VISIBLE
-                adapter.setAdapterData(it)
+                adapter.setAdapterData(list.sortedBy { it.entryDate })
             }
         })
         parkingViewModel.cantCars.observe(this, {
@@ -83,7 +83,7 @@ class ParkingActivity : AppCompatActivity() {
         })
         parkingViewModel.message.observe(this, {
             showMessage(it)
-            if (it == "Vehículo guardado con éxito") {
+            if (it == ParkingViewModel.VEHICLE_SAVE_MESSAGE) {
                 if (!validateShowDialog()) {
                     dialogEnterVehicle.dismiss()
                 }

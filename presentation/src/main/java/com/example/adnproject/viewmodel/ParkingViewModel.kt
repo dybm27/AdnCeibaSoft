@@ -31,6 +31,10 @@ class ParkingViewModel @Inject constructor(
     private val _message = MutableLiveData<String>()
     val message = _message
 
+    companion object{
+        const val VEHICLE_SAVE_MESSAGE = "Vehículo guardado con éxito."
+        const val VEHICLE_NOT_SAVE_MESSAGE = "Ya hay un vehículo con esa placa."
+    }
     fun saveVehicle(vehicle: Vehicle) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -44,9 +48,9 @@ class ParkingViewModel @Inject constructor(
                         }
                     }
                     getVehicles()
-                    message.postValue("Vehículo guardado con éxito")
+                    message.postValue(VEHICLE_SAVE_MESSAGE)
                 } else {
-                    message.postValue("Ya hay un vehículo con esa placa")
+                    message.postValue(VEHICLE_NOT_SAVE_MESSAGE)
                 }
             } catch (e: Exception) {
                 message.postValue(e.message)
