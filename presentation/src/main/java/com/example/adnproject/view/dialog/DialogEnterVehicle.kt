@@ -18,6 +18,7 @@ import com.example.adnproject.toast
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
 import com.example.domain.entity.Vehicle
+import com.example.domain.exception.DomainException
 import com.example.domain.getCurrentDateTime
 
 class DialogEnterVehicle(private val listener: (vehicle: Vehicle) -> Unit) : DialogFragment() {
@@ -47,32 +48,28 @@ class DialogEnterVehicle(private val listener: (vehicle: Vehicle) -> Unit) : Dia
             }
             btnCancel.setOnClickListener { dismiss() }
             btnAdd.setOnClickListener {
-                when {
-                    validateIsNullOrEmptyEditText(this) -> {
-                        activity?.toast("Favor digitar los campos.")
-                    }
-                    validateMinValueEditText(this) -> {
-                        activity?.toast("La placa debe ser mínimo de 6 caracteres.")
-                    }
-                    else -> {
-                        val vehicle = if (rbCar.isChecked) {
-                            Car(etPlateLicense.text.toString(), getCurrentDateTime())
-                        } else {
-                            Motorcycle(
-                                etPlateLicense.text.toString(),
-                                getCurrentDateTime(),
-                                etCylinderCapacity.text.toString().toInt()
-                            )
-                        }
-                        listener(vehicle)
-                    }
-                }
+                saveVehicle(binding)
             }
         }
     }
 
-    private fun validateMinValueEditText(binding: LayoutDialogVehicleBinding): Boolean =
-        binding.etPlateLicense.text!!.length < 6
+    private fun saveVehicle(binding: LayoutDialogVehicleBinding) {
+        try {
+            val vehicle = if (binding.rbCar.isChecked) {
+                Car(binding.etPlateLicense.text.toString(), getCurrentDateTime())
+            } else {
+                Motorcycle(
+                    binding.etPlateLicense.text.toString(),
+                    getCurrentDateTime(),
+                    binding.etCylinderCapacity.text.toString().toInt()
+                )
+            }
+            listener(vehicle)
+        } catch (e: DomainException) {
+            activity?.toast(e.message)
+        }
+    }
+
 
     private fun validateIsNullOrEmptyEditText(binding: LayoutDialogVehicleBinding): Boolean {
         var res = false

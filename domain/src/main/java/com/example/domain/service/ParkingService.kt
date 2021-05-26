@@ -21,10 +21,6 @@ class ParkingService @Inject constructor(
     companion object {
         const val MAX_CAR = 20
         const val MAX_MOTORCYCLE = 10
-        const val PRICE_HOUR_CAR = 1000
-        const val PRICE_HOUR_MOTORCYCLE = 500
-        const val PRICE_DAY_CAR = 8000
-        const val PRICE_DAY_MOTORCYCLE = 4000
         const val NOT_AVAILABLE_SPACE_MESSAGE = "No hay cupo disponible."
         const val NOT_AUTHORIZED_ENTER_MESSAGE = "No esta autorizado para ingresar."
         const val VEHICLE_NOT_SAVE_MESSAGE = "Ya hay un vehículo con esa placa."
@@ -64,21 +60,8 @@ class ParkingService @Inject constructor(
         motorcycleRepository.deleteMotorcycle(motorcycle)
     }
 
-    fun calculateTotalValueCar(car: Car, departureDate: Date = getCurrentDateTime()): Int {
-        return parking.calculateTotalValue(car, PRICE_DAY_CAR, PRICE_HOUR_CAR, departureDate)
-    }
-
-    fun calculateTotalValueMotorcycle(
-        motorcycle: Motorcycle,
-        departureDate: Date = getCurrentDateTime()
-    ): Int {
-        return parking.calculateTotalValue(
-            motorcycle,
-            PRICE_DAY_MOTORCYCLE,
-            PRICE_HOUR_MOTORCYCLE,
-            departureDate,
-            motorcycle.isSurplus
-        )
+    fun calculateTotalValueVehicle(vehicle: Vehicle, departureDate: Date = getCurrentDateTime()): Int {
+        return vehicle.calculateTotalValueVehicle(departureDate)
     }
 
     fun getVehicles(): List<Vehicle> {

@@ -6,13 +6,12 @@ import androidx.lifecycle.ViewModel
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
 import com.example.domain.entity.Vehicle
+import com.example.domain.exception.DomainException
 import com.example.domain.service.ParkingService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,7 +47,7 @@ class ParkingViewModel @Inject constructor(
                 }
                 getVehicles()
                 message.postValue(VEHICLE_SAVE_MESSAGE)
-            } catch (e: Exception) {
+            } catch (e: DomainException) {
                 message.postValue(e.message)
             }
         }
@@ -56,13 +55,12 @@ class ParkingViewModel @Inject constructor(
 
     fun calculateTotalValue(vehicle: Vehicle) {
         CoroutineScope(Dispatchers.IO).launch {
+            totalValue.postValue(parkingService.calculateTotalValueVehicle(vehicle))
             when (vehicle) {
                 is Car -> {
-                    totalValue.postValue(parkingService.calculateTotalValueCar(vehicle))
                     parkingService.deleteCar(vehicle)
                 }
                 is Motorcycle -> {
-                    totalValue.postValue(parkingService.calculateTotalValueMotorcycle(vehicle))
                     parkingService.deleteMotorcycle(vehicle)
                 }
             }
