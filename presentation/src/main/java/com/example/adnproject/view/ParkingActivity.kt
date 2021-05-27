@@ -21,6 +21,7 @@ class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueV
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: VehicleAdapter
+    private lateinit var dialogEnterVehicle: DialogEnterVehicle
     private val parkingViewModel: ParkingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,8 +35,8 @@ class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueV
     }
 
     private fun initDialog() {
-        parkingViewModel.dialog.setListener(this)
-        parkingViewModel.dialog.isCancelable = false
+        dialogEnterVehicle = DialogEnterVehicle.newInstance(this)
+        dialogEnterVehicle.isCancelable = false
     }
 
     private fun initView() {
@@ -43,7 +44,7 @@ class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueV
         with(binding) {
             btnEnterVehicle.setOnClickListener {
                 if (validateShowDialog()) {
-                    parkingViewModel.dialog.show(supportFragmentManager, "enterVehicle")
+                    dialogEnterVehicle.show(supportFragmentManager, "enterVehicle")
                 }
             }
             rvVehicles.layoutManager = LinearLayoutManager(this@ParkingActivity)
@@ -76,14 +77,14 @@ class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueV
             toast(it)
             if (it == ParkingViewModel.VEHICLE_SAVE_MESSAGE) {
                 if (!validateShowDialog()) {
-                    parkingViewModel.dialog.dismiss()
+                    dialogEnterVehicle.dismiss()
                 }
             }
         })
     }
 
     private fun validateShowDialog(): Boolean {
-        return !parkingViewModel.dialog.isAdded && !parkingViewModel.dialog.isVisible
+        return !dialogEnterVehicle.isAdded && !dialogEnterVehicle.isVisible
     }
 
     override fun saveVehicle(vehicle: Vehicle) {

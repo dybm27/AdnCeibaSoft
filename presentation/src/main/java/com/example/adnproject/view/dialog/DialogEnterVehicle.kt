@@ -26,6 +26,14 @@ class DialogEnterVehicle : DialogFragment() {
     private lateinit var binding: LayoutDialogVehicleBinding
     private lateinit var iSaveVehicle: ISaveVehicle
 
+    companion object {
+        fun newInstance(iSaveVehicle: ISaveVehicle): DialogEnterVehicle {
+            val fragment = DialogEnterVehicle()
+            fragment.iSaveVehicle = iSaveVehicle
+            return fragment
+        }
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
@@ -94,9 +102,5 @@ class DialogEnterVehicle : DialogFragment() {
         System.arraycopy(editFilters, 0, newFilters, 0, editFilters.size)
         newFilters[editFilters.size] = AllCaps()
         editText.filters = newFilters
-    }
-
-    fun setListener(listener: ISaveVehicle) {
-        iSaveVehicle = listener
     }
 }

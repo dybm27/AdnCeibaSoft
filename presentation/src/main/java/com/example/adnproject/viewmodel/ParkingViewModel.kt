@@ -3,8 +3,6 @@ package com.example.adnproject.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.adnproject.ISaveVehicle
-import com.example.adnproject.view.dialog.DialogEnterVehicle
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
 import com.example.domain.entity.Vehicle
@@ -27,7 +25,6 @@ class ParkingViewModel @Inject constructor(
     val cantMotorcycles = MutableLiveData<Int>()
     val totalValue = MutableLiveData<Int>()
     val message = MutableLiveData<String>()
-    val dialog = DialogEnterVehicle()
 
     companion object {
         const val VEHICLE_SAVE_MESSAGE = "Vehículo guardado con éxito."
