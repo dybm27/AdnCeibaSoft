@@ -1,13 +1,12 @@
 package com.example.adnproject.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.domain.entity.Car
-import com.example.domain.entity.Motorcycle
-import com.example.domain.entity.Vehicle
+import com.example.domain.vehicle.entity.Car
+import com.example.domain.vehicle.entity.Motorcycle
+import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.exception.DomainException
-import com.example.domain.service.ParkingService
+import com.example.domain.parking.service.ParkingService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -66,7 +65,7 @@ class ParkingViewModel @Inject constructor(
 
     fun getVehicles() {
         CoroutineScope(Dispatchers.IO).launch {
-            vehicles.postValue(parkingService.getVehicles())
+            vehicles.postValue(parkingService.getVehicles().sortedByDescending { it.entryDate })
             cantCars.postValue(parkingService.getAmountCars())
             cantMotorcycles.postValue(parkingService.getAmountMotorcycles())
         }

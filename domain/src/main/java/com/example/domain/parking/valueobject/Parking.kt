@@ -1,9 +1,6 @@
-package com.example.domain.valueobject
+package com.example.domain.parking.valueobject
 
-import com.example.domain.entity.Vehicle
-import com.example.domain.exception.DomainException
-import java.util.*
-import kotlin.math.ceil
+import com.example.domain.vehicle.entity.Vehicle
 
 class Parking {
     private val monday = 1

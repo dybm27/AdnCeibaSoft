@@ -1,7 +1,7 @@
 package com.example.adnproject.dimodule
 
-import com.example.domain.repository.CarRepository
-import com.example.infrastructure.repository.CarRepositoryRoom
+import com.example.domain.vehicle.repository.CarRepository
+import com.example.infrastructure.vehicle.repository.CarRepositoryRoom
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

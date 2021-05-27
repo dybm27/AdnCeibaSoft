@@ -1,10 +1,10 @@
-package com.example.infrastructure.repository
+package com.example.infrastructure.vehicle.repository
 
 import android.content.Context
-import com.example.domain.entity.Motorcycle
-import com.example.domain.repository.MotorcycleRepository
-import com.example.infrastructure.anticorruption.MotorcycleTranslator
-import com.example.infrastructure.database.ParkingDatabase
+import com.example.domain.vehicle.entity.Motorcycle
+import com.example.domain.vehicle.repository.MotorcycleRepository
+import com.example.infrastructure.vehicle.anticorruption.MotorcycleTranslator
+import com.example.infrastructure.vehicle.database.ParkingDatabase
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

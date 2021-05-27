@@ -1,6 +1,6 @@
-package com.example.domain.repository
+package com.example.domain.vehicle.repository
 
-import com.example.domain.entity.Motorcycle
+import com.example.domain.vehicle.entity.Motorcycle
 
 interface MotorcycleRepository {
     fun getMotorcycles(): List<Motorcycle>

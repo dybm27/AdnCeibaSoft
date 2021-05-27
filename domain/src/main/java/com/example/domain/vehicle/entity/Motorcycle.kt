@@ -1,4 +1,4 @@
-package com.example.domain.entity
+package com.example.domain.vehicle.entity
 
 import com.example.domain.exception.DomainException
 import java.util.*

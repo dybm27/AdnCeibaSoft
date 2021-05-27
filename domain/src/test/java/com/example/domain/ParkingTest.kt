@@ -1,20 +1,11 @@
 package com.example.domain
 
-import com.example.domain.databuilder.CarTestDataBuilder
-import com.example.domain.databuilder.MotorcycleTestDataBuilder
 import com.example.domain.databuilder.VehicleTestDataBuilder
-import com.example.domain.entity.Car
-import com.example.domain.entity.Motorcycle
-import com.example.domain.entity.Vehicle
-import com.example.domain.exception.DomainException
-import com.example.domain.service.ParkingService
-import com.example.domain.valueobject.Parking
-import org.junit.Assert
-import org.junit.Assert.assertEquals
+import com.example.domain.vehicle.entity.Vehicle
+import com.example.domain.parking.valueobject.Parking
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import java.util.*
 
 class ParkingTest {
 

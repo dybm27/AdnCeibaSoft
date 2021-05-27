@@ -13,7 +13,7 @@ import com.example.adnproject.toast
 import com.example.adnproject.view.adapter.VehicleAdapter
 import com.example.adnproject.view.dialog.DialogEnterVehicle
 import com.example.adnproject.viewmodel.ParkingViewModel
-import com.example.domain.entity.Vehicle
+import com.example.domain.vehicle.entity.Vehicle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -60,7 +60,7 @@ class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueV
             } else {
                 binding.tvEmptyView.visibility = View.GONE
                 binding.rvVehicles.visibility = View.VISIBLE
-                adapter.setAdapterData(list.sortedBy { it.entryDate })
+                adapter.setAdapterData(list)
             }
         })
         parkingViewModel.cantCars.observe(this, {

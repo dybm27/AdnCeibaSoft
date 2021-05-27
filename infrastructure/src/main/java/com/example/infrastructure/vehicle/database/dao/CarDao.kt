@@ -1,10 +1,10 @@
-package com.example.infrastructure.database.dao
+package com.example.infrastructure.vehicle.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.infrastructure.database.entity.CarEntity
+import com.example.infrastructure.vehicle.database.entity.CarEntity
 
 @Dao
 interface CarDao {

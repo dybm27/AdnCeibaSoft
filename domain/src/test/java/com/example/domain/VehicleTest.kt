@@ -1,7 +1,7 @@
 package com.example.domain
 
 import com.example.domain.databuilder.VehicleTestDataBuilder
-import com.example.domain.entity.Vehicle
+import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.exception.DomainException
 import org.junit.Assert
 import org.junit.Test

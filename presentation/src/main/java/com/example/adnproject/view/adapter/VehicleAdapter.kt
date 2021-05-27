@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.adnproject.ICalculateTotalValueVehicle
 import com.example.adnproject.R
 import com.example.adnproject.databinding.LayoutItemVehicleBinding
-import com.example.domain.entity.Motorcycle
-import com.example.domain.entity.Vehicle
+import com.example.domain.vehicle.entity.Motorcycle
+import com.example.domain.vehicle.entity.Vehicle
 import java.text.SimpleDateFormat
 import java.util.*
 

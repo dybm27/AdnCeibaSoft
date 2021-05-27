@@ -16,8 +16,8 @@ import com.example.adnproject.ISaveVehicle
 import com.example.adnproject.R
 import com.example.adnproject.databinding.LayoutDialogVehicleBinding
 import com.example.adnproject.toast
-import com.example.domain.entity.Car
-import com.example.domain.entity.Motorcycle
+import com.example.domain.vehicle.entity.Car
+import com.example.domain.vehicle.entity.Motorcycle
 import com.example.domain.exception.DomainException
 import com.example.domain.getCurrentDateTime
 

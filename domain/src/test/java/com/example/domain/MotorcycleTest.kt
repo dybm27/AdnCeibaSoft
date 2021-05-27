@@ -1,11 +1,9 @@
 package com.example.domain
 
 import com.example.domain.databuilder.MotorcycleTestDataBuilder
-import com.example.domain.entity.Motorcycle
+import com.example.domain.vehicle.entity.Motorcycle
 import com.example.domain.exception.DomainException
-import com.example.domain.valueobject.Parking
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Test
 
 class MotorcycleTest {

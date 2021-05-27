@@ -1,7 +1,6 @@
 package com.example.domain.databuilder
 
-import com.example.domain.entity.Motorcycle
-import com.example.domain.entity.Vehicle
+import com.example.domain.vehicle.entity.Motorcycle
 import java.util.*
 
 class MotorcycleTestDataBuilder : VehicleTestDataBuilder() {

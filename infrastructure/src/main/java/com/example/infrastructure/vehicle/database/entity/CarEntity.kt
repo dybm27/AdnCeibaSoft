@@ -1,4 +1,4 @@
-package com.example.infrastructure.database.entity
+package com.example.infrastructure.vehicle.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,7 +1,7 @@
-package com.example.infrastructure.anticorruption
+package com.example.infrastructure.vehicle.anticorruption
 
-import com.example.domain.entity.Motorcycle
-import com.example.infrastructure.database.entity.MotorcycleEntity
+import com.example.domain.vehicle.entity.Motorcycle
+import com.example.infrastructure.vehicle.database.entity.MotorcycleEntity
 import java.util.*
 
 
@@ -23,12 +23,7 @@ class MotorcycleTranslator {
             )
         }
 
-        fun fromListEntityToListDomain(motorcycles: List<MotorcycleEntity>): List<Motorcycle> {
-            val list = mutableListOf<Motorcycle>()
-            motorcycles.forEach {
-                list.add(fromEntityToDomain(it))
-            }
-            return list
-        }
+        fun fromListEntityToListDomain(motorcycles: List<MotorcycleEntity>): List<Motorcycle> =
+            motorcycles.map { fromEntityToDomain(it) }
     }
 }

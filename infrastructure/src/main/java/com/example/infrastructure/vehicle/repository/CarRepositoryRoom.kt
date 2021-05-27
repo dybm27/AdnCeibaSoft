@@ -1,13 +1,11 @@
-package com.example.infrastructure.repository
+package com.example.infrastructure.vehicle.repository
 
 import android.content.Context
-import com.example.domain.entity.Car
-import com.example.domain.repository.CarRepository
-import com.example.infrastructure.anticorruption.CarTranslator
-import com.example.infrastructure.database.ParkingDatabase
-import com.example.infrastructure.database.dao.CarDao
+import com.example.domain.vehicle.entity.Car
+import com.example.domain.vehicle.repository.CarRepository
+import com.example.infrastructure.vehicle.anticorruption.CarTranslator
+import com.example.infrastructure.vehicle.database.ParkingDatabase
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class CarRepositoryRoom @Inject constructor(@ApplicationContext private val context: Context) :

@@ -1,13 +1,13 @@
-package com.example.domain.service
+package com.example.domain.parking.service
 
-import com.example.domain.entity.Car
-import com.example.domain.entity.Motorcycle
-import com.example.domain.valueobject.Parking
-import com.example.domain.entity.Vehicle
+import com.example.domain.vehicle.entity.Car
+import com.example.domain.vehicle.entity.Motorcycle
+import com.example.domain.parking.valueobject.Parking
+import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.exception.DomainException
 import com.example.domain.getCurrentDateTime
-import com.example.domain.repository.CarRepository
-import com.example.domain.repository.MotorcycleRepository
+import com.example.domain.vehicle.repository.CarRepository
+import com.example.domain.vehicle.repository.MotorcycleRepository
 import com.example.domain.today
 import java.util.Date
 import javax.inject.Inject

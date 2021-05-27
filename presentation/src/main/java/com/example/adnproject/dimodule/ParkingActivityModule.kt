@@ -1,7 +1,7 @@
 package com.example.adnproject.dimodule
 
 import com.example.adnproject.viewmodel.ParkingViewModel
-import com.example.domain.service.ParkingService
+import com.example.domain.parking.service.ParkingService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

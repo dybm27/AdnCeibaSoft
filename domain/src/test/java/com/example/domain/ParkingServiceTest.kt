@@ -2,13 +2,13 @@ package com.example.domain
 
 import com.example.domain.databuilder.CarTestDataBuilder
 import com.example.domain.databuilder.MotorcycleTestDataBuilder
-import com.example.domain.entity.Car
-import com.example.domain.entity.Motorcycle
-import com.example.domain.entity.Vehicle
+import com.example.domain.vehicle.entity.Car
+import com.example.domain.vehicle.entity.Motorcycle
+import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.exception.DomainException
-import com.example.domain.repository.CarRepository
-import com.example.domain.repository.MotorcycleRepository
-import com.example.domain.service.ParkingService
+import com.example.domain.vehicle.repository.CarRepository
+import com.example.domain.vehicle.repository.MotorcycleRepository
+import com.example.domain.parking.service.ParkingService
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -16,7 +16,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.*
 
 @RunWith(MockitoJUnitRunner::class)
 class ParkingServiceTest {

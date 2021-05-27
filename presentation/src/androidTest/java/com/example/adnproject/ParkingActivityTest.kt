@@ -6,7 +6,6 @@ import com.example.adnproject.view.DialogEnterVehicleView
 import com.example.adnproject.view.ItemVehicleView
 import com.example.adnproject.view.ParkingActivity
 import com.example.adnproject.view.ParkingActivityView
-import com.example.domain.service.ParkingService
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

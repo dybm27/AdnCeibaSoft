@@ -1,6 +1,6 @@
 package com.example.domain.databuilder
 
-import com.example.domain.entity.Vehicle
+import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.getCurrentDateTime
 import java.util.*
 

@@ -1,13 +1,8 @@
 package com.example.domain
 
 import com.example.domain.databuilder.CarTestDataBuilder
-import com.example.domain.databuilder.MotorcycleTestDataBuilder
-import com.example.domain.databuilder.VehicleTestDataBuilder
-import com.example.domain.entity.Car
-import com.example.domain.entity.Motorcycle
-import com.example.domain.valueobject.Parking
+import com.example.domain.vehicle.entity.Car
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Test
 
 class CarTest {
