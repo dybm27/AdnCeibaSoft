@@ -1,19 +1,21 @@
 package com.example.domain.vehicle.entity
 
+import com.example.domain.parking.valueobject.Parking
 import java.util.*
 
 class Car(licensePlate: String, entryDate: Date) :
     Vehicle(licensePlate, entryDate) {
-    companion object {
-        const val PRICE_HOUR_CAR = 1000
-        const val PRICE_DAY_CAR = 8000
-    }
 
     override fun calculateTotalValueVehicle(departureDate: Date): Int {
         return calculateTotalValue(
-            PRICE_DAY_CAR,
-            PRICE_HOUR_CAR, departureDate
+            Parking.PRICE_DAY_CAR,
+            Parking.PRICE_HOUR_CAR, departureDate
         )
     }
 
+    override fun surplus(): Int {
+        return 0
+    }
+
+    override fun validateMaximumQuantity(amount: Int): Boolean = amount == Parking.MAX_CAR
 }

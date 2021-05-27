@@ -1,15 +1,13 @@
 package com.example.domain.vehicle.entity
 
 import com.example.domain.exception.DomainException
+import com.example.domain.parking.valueobject.Parking
 import java.util.*
 
 class Motorcycle(licensePlate: String, entryDate: Date, val cylinderCapacity: Int) :
     Vehicle(licensePlate, entryDate) {
 
     companion object {
-        const val PRICE_HOUR_MOTORCYCLE = 500
-        const val PRICE_DAY_MOTORCYCLE = 4000
-        const val SURPLUS = 2000
         const val CYLINDER_CAPACITY_ERROR_MESSAGE = "El cilindraje no es válido"
     }
 
@@ -24,14 +22,19 @@ class Motorcycle(licensePlate: String, entryDate: Date, val cylinderCapacity: In
     }
 
     override fun calculateTotalValueVehicle(departureDate: Date): Int {
-        return calculateTotalValue(PRICE_DAY_MOTORCYCLE, PRICE_HOUR_MOTORCYCLE, departureDate)
+        return calculateTotalValue(
+            Parking.PRICE_DAY_MOTORCYCLE,
+            Parking.PRICE_HOUR_MOTORCYCLE,
+            departureDate
+        )
     }
 
     override fun surplus(): Int {
         if (cylinderCapacity > 500) {
-            return SURPLUS
+            return Parking.MOTORCYCLE_SURPLUS
         }
-        return super.surplus()
+        return 0
     }
 
+    override fun validateMaximumQuantity(amount: Int): Boolean = amount == Parking.MAX_MOTORCYCLE
 }

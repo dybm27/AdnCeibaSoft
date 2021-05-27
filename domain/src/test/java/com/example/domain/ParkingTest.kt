@@ -1,8 +1,11 @@
 package com.example.domain
 
-import com.example.domain.databuilder.VehicleTestDataBuilder
-import com.example.domain.vehicle.entity.Vehicle
+import com.example.domain.databuilder.CarTestDataBuilder
+import com.example.domain.databuilder.MotorcycleTestDataBuilder
+import com.example.domain.exception.DomainException
 import com.example.domain.parking.valueobject.Parking
+import com.example.domain.vehicle.entity.Vehicle
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -17,55 +20,66 @@ class ParkingTest {
     }
 
     @Test
-    fun validateLicensePlateAndDay_startsWithA_monday_isCorrect() {
+    fun validateVehicleEntryStartsWithA_monday_isCorrect() {
         //Arrange
         val vehicle = createVehicleWithLicensePlateStartA()
-        //Act
-        val res = parking.validateLicensePlateAndDay(vehicle, 1)
-        //Assert
-        assertTrue(res)
+        try {
+            //Act
+            parking.validateVehicleEntry(vehicle, 1, 1)
+        } catch (e: DomainException) {
+            //Assert
+            assertEquals(Parking.NOT_AUTHORIZED_ENTER_MESSAGE, e.message)
+        }
     }
 
     @Test
-    fun validateLicensePlateAndDay_startsWithA_sunday_isCorrect() {
+    fun validateVehicleEntryStartsWithA_sunday_isCorrect() {
         //Arrange
         val vehicle = createVehicleWithLicensePlateStartA()
-        //Act
-        val res = parking.validateLicensePlateAndDay(vehicle, 7)
-        //Assert
-        assertTrue(res)
+        try {
+            //Act
+            parking.validateVehicleEntry(vehicle, 1, 7)
+        } catch (e: DomainException) {
+            //Assert
+            assertEquals(Parking.NOT_AUTHORIZED_ENTER_MESSAGE, e.message)
+        }
     }
 
     @Test
-    fun validateLicensePlateAndDay_startsWithA_daysOtherThanMondayAndSunday_isCorrect() {
+    fun validateVehicleEntryStartsWithA_daysOtherThanMondayAndSunday_isCorrect() {
         //Arrange
         val vehicle = createVehicleWithLicensePlateStartA()
-        //Act
-        val res = validateLicensePlateAndDays(vehicle, arrayOf(2, 3, 4, 5, 6))
-        //Assert
-        assertTrue(!res)
+        try {
+            //Act
+            val res = validateLicensePlateAndDays(vehicle, arrayOf(2, 3, 4, 5, 6))
+            //Assert
+            assertTrue(res.isEmpty())
+        } catch (e: DomainException) {
+        }
     }
 
     private fun createVehicleWithLicensePlateStartA(): Vehicle =
-        VehicleTestDataBuilder().withLicensePlate("ASR324").build()
+        CarTestDataBuilder().withLicensePlate("ASR324").build()
 
     @Test
-    fun validateLicensePlateAndDay_notStartsWithA_anyDay_isCorrect() {
+    fun validateVehicleEntrynotStartsWithA_anyDay_isCorrect() {
         //Arrange
-        val vehicle = VehicleTestDataBuilder().build()
-        //Act
-        val res = validateLicensePlateAndDays(vehicle, arrayOf(1, 2, 3, 4, 5, 6, 7))
-        //Assert
-        assertTrue(!res)
+        val vehicle = MotorcycleTestDataBuilder().build()
+        try {
+            //Act
+            val res = validateLicensePlateAndDays(vehicle, arrayOf(1, 2, 3, 4, 5, 6, 7))
+            //Assert
+            assertTrue(res.isEmpty())
+        } catch (e: DomainException) {
+        }
     }
 
-    private fun validateLicensePlateAndDays(vehicle: Vehicle, array: Array<Int>): Boolean {
-        var res = false
+
+    @Throws(DomainException::class)
+    private fun validateLicensePlateAndDays(vehicle: Vehicle, array: Array<Int>): String {
         array.forEach {
-            if (parking.validateLicensePlateAndDay(vehicle, it)) {
-                res = true
-            }
+            parking.validateVehicleEntry(vehicle, 0, it)
         }
-        return res
+        return ""
     }
 }

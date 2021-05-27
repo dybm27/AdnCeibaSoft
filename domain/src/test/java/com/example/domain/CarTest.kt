@@ -1,7 +1,7 @@
 package com.example.domain
 
 import com.example.domain.databuilder.CarTestDataBuilder
-import com.example.domain.vehicle.entity.Car
+import com.example.domain.parking.valueobject.Parking
 import org.junit.Assert
 import org.junit.Test
 
@@ -16,7 +16,7 @@ class CarTest {
         //Act
         val res = car.calculateTotalValueVehicle(departureDate)
         //Assert
-        Assert.assertEquals(7 * Car.PRICE_HOUR_CAR, res)
+        Assert.assertEquals(7 * Parking.PRICE_HOUR_CAR, res)
     }
 
     @Test
@@ -28,6 +28,6 @@ class CarTest {
         //Act
         val res = car.calculateTotalValueVehicle(departureDate)
         //Assert
-        Assert.assertEquals(4 * Car.PRICE_DAY_CAR, res)
+        Assert.assertEquals(4 * Parking.PRICE_DAY_CAR, res)
     }
 }

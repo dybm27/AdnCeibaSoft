@@ -1,14 +1,13 @@
 package com.example.domain.vehicle.entity
 
 import com.example.domain.exception.DomainException
+import com.example.domain.parking.valueobject.Parking
 import java.util.*
 import kotlin.math.ceil
 
-open class Vehicle(val licensePlate: String, val entryDate: Date) {
+abstract class Vehicle(val licensePlate: String, val entryDate: Date) {
 
     private val hourMilliseconds = 3600000
-    private val hourlyPay = 9
-    private val payDay = 24
 
     companion object {
         const val DEPARTURE_DATE_ERROR_MESSAGE =
@@ -28,15 +27,13 @@ open class Vehicle(val licensePlate: String, val entryDate: Date) {
         }
     }
 
-    open fun calculateTotalValueVehicle(
+    abstract fun calculateTotalValueVehicle(
         departureDate: Date
-    ): Int {
-        return calculateTotalValue(0,0,departureDate)
-    }
+    ): Int
 
-    open fun surplus(): Int {
-        return 0
-    }
+    abstract fun surplus(): Int
+
+    abstract fun validateMaximumQuantity(amount: Int): Boolean
 
     protected fun calculateTotalValue(
         priceDay: Int,
@@ -46,20 +43,20 @@ open class Vehicle(val licensePlate: String, val entryDate: Date) {
         var value = 0
         val amountHours = getAmountHours(this.entryDate, departureDate)
         when {
-            amountHours < hourlyPay -> {
+            amountHours < Parking.HOURLY_PAY -> {
                 value += priceHour * amountHours
             }
-            amountHours <= payDay -> {
+            amountHours <= Parking.PAY_DAY -> {
                 value += priceDay
             }
             else -> {
-                val days = amountHours / payDay
-                val hours = amountHours % payDay
+                val days = amountHours / Parking.PAY_DAY
+                val hours = amountHours % Parking.PAY_DAY
                 value += when {
                     hours == 0 -> {
                         (days * priceDay)
                     }
-                    hours < hourlyPay -> {
+                    hours < Parking.HOURLY_PAY -> {
                         (days * priceDay) + (hours * priceHour)
                     }
                     else -> {

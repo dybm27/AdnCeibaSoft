@@ -27,14 +27,11 @@ class DialogEnterVehicle : DialogFragment() {
     private lateinit var iSaveVehicle: ISaveVehicle
 
     companion object {
-        fun newInstance(iSaveVehicle: ISaveVehicle): DialogEnterVehicle {
-            val fragment = DialogEnterVehicle()
-            fragment.iSaveVehicle = iSaveVehicle
-            return fragment
-        }
+        fun newInstance(): DialogEnterVehicle = DialogEnterVehicle()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        isCancelable = false
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             val view =
@@ -102,5 +99,10 @@ class DialogEnterVehicle : DialogFragment() {
         System.arraycopy(editFilters, 0, newFilters, 0, editFilters.size)
         newFilters[editFilters.size] = AllCaps()
         editText.filters = newFilters
+    }
+
+    fun setCallback(callback: ISaveVehicle): DialogEnterVehicle {
+        iSaveVehicle = callback
+        return this
     }
 }

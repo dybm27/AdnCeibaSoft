@@ -19,48 +19,43 @@ class ParkingService @Inject constructor(
     private val parking: Parking = Parking()
 
     companion object {
-        const val MAX_CAR = 20
-        const val MAX_MOTORCYCLE = 10
-        const val NOT_AVAILABLE_SPACE_MESSAGE = "No hay cupo disponible."
-        const val NOT_AUTHORIZED_ENTER_MESSAGE = "No esta autorizado para ingresar."
         const val VEHICLE_NOT_SAVE_MESSAGE = "Ya hay un vehículo con esa placa."
     }
 
-    fun saveCar(car: Car, today: Int = today()) {
-        val numberOfCar = getAmountCars()
-        if (numberOfCar == MAX_CAR) {
-            throw DomainException(NOT_AVAILABLE_SPACE_MESSAGE)
-        } else if (parking.validateLicensePlateAndDay(car, today)) {
-            throw DomainException(NOT_AUTHORIZED_ENTER_MESSAGE)
-        }
-        if (validateExistingVehicle(car)) {
+    fun saveVehicle(vehicle: Vehicle, today: Int = today()) {
+        if (validateExistingVehicle(vehicle)) {
             throw DomainException(VEHICLE_NOT_SAVE_MESSAGE)
         }
-        carRepository.saveCar(car)
-    }
-
-    fun saveMotorcycle(motorcycle: Motorcycle, today: Int = today()) {
-        val numberOfMotorcycle = getAmountMotorcycles()
-        if (numberOfMotorcycle == MAX_MOTORCYCLE) {
-            throw DomainException(NOT_AVAILABLE_SPACE_MESSAGE)
-        } else if (parking.validateLicensePlateAndDay(motorcycle, today)) {
-            throw DomainException(NOT_AUTHORIZED_ENTER_MESSAGE)
+        when (vehicle) {
+            is Car -> {
+                val numberOfCar = getAmountCars()
+                parking.validateVehicleEntry(vehicle, numberOfCar, today)
+                carRepository.saveCar(vehicle)
+            }
+            is Motorcycle -> {
+                val numberOfMotorcycle = getAmountMotorcycles()
+                parking.validateVehicleEntry(vehicle, numberOfMotorcycle, today)
+                motorcycleRepository.saveMotorcycle(vehicle)
+            }
         }
-        if (validateExistingVehicle(motorcycle)) {
-            throw DomainException(VEHICLE_NOT_SAVE_MESSAGE)
+
+    }
+
+    fun deleteVehicle(vehicle: Vehicle) {
+        when (vehicle) {
+            is Car -> {
+                carRepository.deleteCar(vehicle)
+            }
+            is Motorcycle -> {
+                motorcycleRepository.deleteMotorcycle(vehicle)
+            }
         }
-        motorcycleRepository.saveMotorcycle(motorcycle)
     }
 
-    fun deleteCar(car: Car) {
-        carRepository.deleteCar(car)
-    }
-
-    fun deleteMotorcycle(motorcycle: Motorcycle) {
-        motorcycleRepository.deleteMotorcycle(motorcycle)
-    }
-
-    fun calculateTotalValueVehicle(vehicle: Vehicle, departureDate: Date = getCurrentDateTime()): Int {
+    fun calculateTotalValueVehicle(
+        vehicle: Vehicle,
+        departureDate: Date = getCurrentDateTime()
+    ): Int {
         return vehicle.calculateTotalValueVehicle(departureDate)
     }
 

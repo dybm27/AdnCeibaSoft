@@ -3,6 +3,7 @@ package com.example.domain
 import com.example.domain.databuilder.MotorcycleTestDataBuilder
 import com.example.domain.vehicle.entity.Motorcycle
 import com.example.domain.exception.DomainException
+import com.example.domain.parking.valueobject.Parking
 import org.junit.Assert
 import org.junit.Test
 
@@ -18,7 +19,7 @@ class MotorcycleTest {
         val res = motorcycle.calculateTotalValueVehicle(departureDate)
         //Assert
         Assert.assertEquals(
-            ((4 * Motorcycle.PRICE_DAY_MOTORCYCLE) + (7 * Motorcycle.PRICE_HOUR_MOTORCYCLE)),
+            ((4 * Parking.PRICE_DAY_MOTORCYCLE) + (7 * Parking.PRICE_HOUR_MOTORCYCLE)),
             res
         )
     }
@@ -34,7 +35,7 @@ class MotorcycleTest {
         val res = motorcycle.calculateTotalValueVehicle(departureDate)
         //Assert
         Assert.assertEquals(
-            ((4 * Motorcycle.PRICE_DAY_MOTORCYCLE) + (7 * Motorcycle.PRICE_HOUR_MOTORCYCLE)) + Motorcycle.SURPLUS,
+            ((4 * Parking.PRICE_DAY_MOTORCYCLE) + (7 * Parking.PRICE_HOUR_MOTORCYCLE)) + Parking.MOTORCYCLE_SURPLUS,
             res
         )
     }
@@ -47,7 +48,7 @@ class MotorcycleTest {
         //Act
         val res = motorcycle.surplus()
         //Assert
-        Assert.assertEquals(Motorcycle.SURPLUS, res)
+        Assert.assertEquals(Parking.MOTORCYCLE_SURPLUS, res)
     }
 
     @Test

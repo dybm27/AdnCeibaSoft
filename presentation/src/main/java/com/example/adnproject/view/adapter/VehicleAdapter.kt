@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.adnproject.ICalculateTotalValueVehicle
 import com.example.adnproject.R
 import com.example.adnproject.databinding.LayoutItemVehicleBinding
+import com.example.adnproject.view.viewholder.VehicleViewHolder
 import com.example.domain.vehicle.entity.Motorcycle
 import com.example.domain.vehicle.entity.Vehicle
 import java.text.SimpleDateFormat
@@ -16,7 +17,7 @@ class VehicleAdapter(
     private var vehicles: List<Vehicle>,
     private val listener: ICalculateTotalValueVehicle
 ) :
-    RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
+    RecyclerView.Adapter<VehicleViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VehicleViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -25,7 +26,7 @@ class VehicleAdapter(
                 R.layout.layout_item_vehicle,
                 parent,
                 false
-            )
+            ), listener
         )
     }
 
@@ -34,28 +35,6 @@ class VehicleAdapter(
     }
 
     override fun getItemCount(): Int = vehicles.size
-
-    inner class VehicleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val binding = LayoutItemVehicleBinding.bind(view)
-        fun bind(vehicle: Vehicle) {
-            val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
-            with(binding) {
-                tvLicensePlate.text = vehicle.licensePlate
-                tvEntryDate.text = simpleDateFormat.format(vehicle.entryDate)
-                with(lyCylinderCapacity) {
-                    if (vehicle is Motorcycle) {
-                        tvVehicleType.text = "Motocicleta"
-                        visibility = View.VISIBLE
-                        tvCylinderCapacity.text = vehicle.cylinderCapacity.toString()
-                    } else {
-                        tvVehicleType.text = "Carro"
-                        visibility = View.GONE
-                    }
-                }
-                ivExit.setOnClickListener { listener.calculateTotalValue(vehicle) }
-            }
-        }
-    }
 
     fun setAdapterData(vehicles: List<Vehicle>) {
         this.vehicles = vehicles

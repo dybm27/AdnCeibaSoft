@@ -35,12 +35,12 @@ class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueV
     }
 
     private fun initDialog() {
-        dialogEnterVehicle = DialogEnterVehicle.newInstance(this)
+        dialogEnterVehicle = DialogEnterVehicle.newInstance().setCallback(this)
         dialogEnterVehicle.isCancelable = false
     }
 
     private fun initView() {
-        adapter = VehicleAdapter(listOf(),this)
+        adapter = VehicleAdapter(listOf(), this)
         with(binding) {
             btnEnterVehicle.setOnClickListener {
                 if (validateShowDialog()) {
@@ -70,15 +70,19 @@ class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueV
             binding.tvCantMotorcycles.text =
                 String.format(getString(R.string.cant_motorcycles), it);
         })
-        parkingViewModel.totalValue.observe(this, {
-            toast("Valor pagado: $it")
-        })
-        parkingViewModel.message.observe(this, {
-            toast(it)
-            if (it == ParkingViewModel.VEHICLE_SAVE_MESSAGE) {
-                if (!validateShowDialog()) {
-                    dialogEnterVehicle.dismiss()
+        parkingViewModel.getMessage.observe(this, {
+            it.getContentIfNotHandled()?.let { message ->
+                toast(message)
+                if (message == ParkingViewModel.VEHICLE_SAVE_MESSAGE) {
+                    if (!validateShowDialog()) {
+                        dialogEnterVehicle.dismiss()
+                    }
                 }
+            }
+        })
+        parkingViewModel.getTotalValue.observe(this, {
+            it.getContentIfNotHandled()?.let { value ->
+                toast("Valor pagado: $value")
             }
         })
     }

@@ -1,9 +1,8 @@
 package com.example.adnproject.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.domain.vehicle.entity.Car
-import com.example.domain.vehicle.entity.Motorcycle
 import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.exception.DomainException
 import com.example.domain.parking.service.ParkingService
@@ -22,8 +21,8 @@ class ParkingViewModel @Inject constructor(
     val vehicles = MutableLiveData<List<Vehicle>>()
     val cantCars = MutableLiveData<Int>()
     val cantMotorcycles = MutableLiveData<Int>()
-    val totalValue = MutableLiveData<Int>()
-    val message = MutableLiveData<String>()
+    private val _message = MutableLiveData<Event<String>>()
+    private val _totalValue = MutableLiveData<Event<Int>>()
 
     companion object {
         const val VEHICLE_SAVE_MESSAGE = "Vehículo guardado con éxito."
@@ -32,33 +31,19 @@ class ParkingViewModel @Inject constructor(
     fun saveVehicle(vehicle: Vehicle) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                when (vehicle) {
-                    is Car -> {
-                        parkingService.saveCar(vehicle)
-                    }
-                    is Motorcycle -> {
-                        parkingService.saveMotorcycle(vehicle)
-                    }
-                }
+                parkingService.saveVehicle(vehicle)
                 getVehicles()
-                message.postValue(VEHICLE_SAVE_MESSAGE)
+                _message.postValue(Event(VEHICLE_SAVE_MESSAGE))
             } catch (e: DomainException) {
-                message.postValue(e.message)
+                _message.postValue(Event(e.message))
             }
         }
     }
 
     fun calculateTotalValue(vehicle: Vehicle) {
         CoroutineScope(Dispatchers.IO).launch {
-            totalValue.postValue(parkingService.calculateTotalValueVehicle(vehicle))
-            when (vehicle) {
-                is Car -> {
-                    parkingService.deleteCar(vehicle)
-                }
-                is Motorcycle -> {
-                    parkingService.deleteMotorcycle(vehicle)
-                }
-            }
+            _totalValue.postValue(Event(parkingService.calculateTotalValueVehicle(vehicle)))
+            parkingService.deleteVehicle(vehicle)
             getVehicles()
         }
     }
@@ -70,4 +55,10 @@ class ParkingViewModel @Inject constructor(
             cantMotorcycles.postValue(parkingService.getAmountMotorcycles())
         }
     }
+
+    val getMessage: LiveData<Event<String>>
+        get() = _message
+
+    val getTotalValue: LiveData<Event<Int>>
+        get() = _totalValue
 }

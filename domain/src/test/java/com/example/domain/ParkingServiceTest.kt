@@ -2,13 +2,12 @@ package com.example.domain
 
 import com.example.domain.databuilder.CarTestDataBuilder
 import com.example.domain.databuilder.MotorcycleTestDataBuilder
-import com.example.domain.vehicle.entity.Car
-import com.example.domain.vehicle.entity.Motorcycle
-import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.exception.DomainException
+import com.example.domain.parking.service.ParkingService
+import com.example.domain.parking.valueobject.Parking
+import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.vehicle.repository.CarRepository
 import com.example.domain.vehicle.repository.MotorcycleRepository
-import com.example.domain.parking.service.ParkingService
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -38,13 +37,13 @@ class ParkingServiceTest {
         //Arrange
         val car = CarTestDataBuilder().build()
         `when`(carRepositoryMock.getAmountCars())
-            .thenReturn(ParkingService.MAX_CAR)
+            .thenReturn(Parking.MAX_CAR)
         try {
             //Act
-            parkingService.saveCar(car)
+            parkingService.saveVehicle(car)
         } catch (e: DomainException) {
             //Assert
-            assertEquals(ParkingService.NOT_AVAILABLE_SPACE_MESSAGE, e.message)
+            assertEquals(Parking.NOT_AVAILABLE_SPACE_MESSAGE, e.message)
         }
     }
 
@@ -54,10 +53,10 @@ class ParkingServiceTest {
         val car = CarTestDataBuilder().withLicensePlate("AQW131").build()
         try {
             //Act
-            parkingService.saveCar(car, 1)
+            parkingService.saveVehicle(car, 1)
         } catch (e: DomainException) {
             //Assert
-            assertEquals(ParkingService.NOT_AUTHORIZED_ENTER_MESSAGE, e.message)
+            assertEquals(Parking.NOT_AUTHORIZED_ENTER_MESSAGE, e.message)
         }
     }
 
@@ -67,10 +66,10 @@ class ParkingServiceTest {
         val car = CarTestDataBuilder().withLicensePlate("AQW131").build()
         try {
             //Act
-            parkingService.saveCar(car, 7)
+            parkingService.saveVehicle(car, 7)
         } catch (e: DomainException) {
             //Assert
-            assertEquals(ParkingService.NOT_AUTHORIZED_ENTER_MESSAGE, e.message)
+            assertEquals(Parking.NOT_AUTHORIZED_ENTER_MESSAGE, e.message)
         }
     }
 
@@ -79,13 +78,13 @@ class ParkingServiceTest {
         //Arrange
         val motorcycle = MotorcycleTestDataBuilder().build()
         `when`(motorcycleRepositoryMock.getAmountMotorcycles())
-            .thenReturn(ParkingService.MAX_MOTORCYCLE)
+            .thenReturn(Parking.MAX_MOTORCYCLE)
         try {
             //Act
-            parkingService.saveMotorcycle(motorcycle)
+            parkingService.saveVehicle(motorcycle)
         } catch (e: DomainException) {
             //Assert
-            assertEquals(ParkingService.NOT_AVAILABLE_SPACE_MESSAGE, e.message)
+            assertEquals(Parking.NOT_AVAILABLE_SPACE_MESSAGE, e.message)
         }
     }
 
@@ -95,10 +94,10 @@ class ParkingServiceTest {
         val motorcycle = MotorcycleTestDataBuilder().withLicensePlate("AQW131").build()
         try {
             //Act
-            parkingService.saveMotorcycle(motorcycle, 1)
+            parkingService.saveVehicle(motorcycle, 1)
         } catch (e: DomainException) {
             //Assert
-            assertEquals(ParkingService.NOT_AUTHORIZED_ENTER_MESSAGE, e.message)
+            assertEquals(Parking.NOT_AUTHORIZED_ENTER_MESSAGE, e.message)
         }
     }
 
@@ -108,10 +107,10 @@ class ParkingServiceTest {
         val motorcycle = MotorcycleTestDataBuilder().withLicensePlate("AQW131").build()
         try {
             //Act
-            parkingService.saveMotorcycle(motorcycle, 7)
+            parkingService.saveVehicle(motorcycle, 7)
         } catch (e: DomainException) {
             //Assert
-            assertEquals(ParkingService.NOT_AUTHORIZED_ENTER_MESSAGE, e.message)
+            assertEquals(Parking.NOT_AUTHORIZED_ENTER_MESSAGE, e.message)
         }
     }
 
@@ -134,13 +133,11 @@ class ParkingServiceTest {
     fun validateExistingVehicle_motorcycle_isCorrect() {
         //Arrange
         val motorcycle = MotorcycleTestDataBuilder().withLicensePlate("AQW131").build()
-        `when`(motorcycleRepositoryMock.getAmountMotorcycles())
-            .thenReturn(3)
         `when`(motorcycleRepositoryMock.getMotorcycle("AQW131"))
             .thenReturn(motorcycle)
         try {
             //Act
-            parkingService.saveMotorcycle(motorcycle, 2)
+            parkingService.saveVehicle(motorcycle, 2)
         } catch (e: DomainException) {
             //Assert
             assertEquals(ParkingService.VEHICLE_NOT_SAVE_MESSAGE, e.message)
@@ -151,13 +148,11 @@ class ParkingServiceTest {
     fun validateExistingVehicle_car_isCorrect() {
         //Arrange
         val car = CarTestDataBuilder().withLicensePlate("AQW131").build()
-        `when`(carRepositoryMock.getAmountCars())
-            .thenReturn(3)
         `when`(carRepositoryMock.getCar("AQW131"))
             .thenReturn(car)
         try {
             //Act
-            parkingService.saveCar(car, 2)
+            parkingService.saveVehicle(car, 2)
         } catch (e: DomainException) {
             //Assert
             assertEquals(ParkingService.VEHICLE_NOT_SAVE_MESSAGE, e.message)
@@ -173,7 +168,7 @@ class ParkingServiceTest {
         //Act
         val res = parkingService.calculateTotalValueVehicle(car, departureDate)
         //Assert
-        assertEquals((8 * Car.PRICE_HOUR_CAR), res)
+        assertEquals((8 * Parking.PRICE_HOUR_CAR), res)
     }
 
     @Test
@@ -185,7 +180,7 @@ class ParkingServiceTest {
         //Act
         val res = parkingService.calculateTotalValueVehicle(car, departureDate)
         //Assert
-        assertEquals(Car.PRICE_DAY_CAR, res)
+        assertEquals(Parking.PRICE_DAY_CAR, res)
     }
 
     @Test
@@ -198,7 +193,7 @@ class ParkingServiceTest {
         val res = parkingService.calculateTotalValueVehicle(car, departureDate)
         //Assert
         assertEquals(
-            ((4 * Car.PRICE_DAY_CAR) + (7 * Car.PRICE_HOUR_CAR)),
+            ((4 * Parking.PRICE_DAY_CAR) + (7 * Parking.PRICE_HOUR_CAR)),
             res
         )
     }
@@ -212,7 +207,7 @@ class ParkingServiceTest {
         //Act
         val res = parkingService.calculateTotalValueVehicle(car, departureDate)
         //Assert
-        assertEquals((4 * Car.PRICE_DAY_CAR), res)
+        assertEquals((4 * Parking.PRICE_DAY_CAR), res)
     }
 
     @Test
@@ -224,7 +219,7 @@ class ParkingServiceTest {
         //Act
         val res = parkingService.calculateTotalValueVehicle(car, departureDate)
         //Assert
-        assertEquals((5 * Car.PRICE_DAY_CAR), res)
+        assertEquals((5 * Parking.PRICE_DAY_CAR), res)
     }
 
     @Test
@@ -237,7 +232,7 @@ class ParkingServiceTest {
         val res = parkingService.calculateTotalValueVehicle(motorcycle, departureDate)
         //Assert
         assertEquals(
-            ((4 * Motorcycle.PRICE_DAY_MOTORCYCLE) + (7 * Motorcycle.PRICE_HOUR_MOTORCYCLE)),
+            ((4 * Parking.PRICE_DAY_MOTORCYCLE) + (7 * Parking.PRICE_HOUR_MOTORCYCLE)),
             res
         )
     }
@@ -252,7 +247,7 @@ class ParkingServiceTest {
         //Act
         val res = parkingService.calculateTotalValueVehicle(motorcycle, departureDate)
         //Assert
-        assertEquals((8 * Motorcycle.PRICE_HOUR_MOTORCYCLE) + Motorcycle.SURPLUS, res)
+        assertEquals((8 * Parking.PRICE_HOUR_MOTORCYCLE) + Parking.MOTORCYCLE_SURPLUS, res)
     }
 
     @Test
@@ -265,7 +260,7 @@ class ParkingServiceTest {
         //Act
         val res = parkingService.calculateTotalValueVehicle(motorcycle, departureDate)
         //Assert
-        assertEquals(Motorcycle.PRICE_DAY_MOTORCYCLE + Motorcycle.SURPLUS, res)
+        assertEquals(Parking.PRICE_DAY_MOTORCYCLE + Parking.MOTORCYCLE_SURPLUS, res)
     }
 
     @Test
@@ -279,7 +274,7 @@ class ParkingServiceTest {
         val res = parkingService.calculateTotalValueVehicle(motorcycle, departureDate)
         //Assert
         assertEquals(
-            ((4 * Motorcycle.PRICE_DAY_MOTORCYCLE) + (7 * Motorcycle.PRICE_HOUR_MOTORCYCLE)) + Motorcycle.SURPLUS,
+            ((4 * Parking.PRICE_DAY_MOTORCYCLE) + (7 * Parking.PRICE_HOUR_MOTORCYCLE)) + Parking.MOTORCYCLE_SURPLUS,
             res
         )
     }

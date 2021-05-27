@@ -4,26 +4,13 @@ import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.getCurrentDateTime
 import java.util.*
 
-open class VehicleTestDataBuilder {
-     var licensePlate: String
-     var entryDate: Date
+abstract class VehicleTestDataBuilder {
+    var licensePlate: String = "QWE123"
+    var entryDate: Date = getCurrentDateTime()
 
-    init {
-        licensePlate = "QWE123"
-        entryDate = getCurrentDateTime()
-    }
+    abstract fun withLicensePlate(licensePlate: String): VehicleTestDataBuilder
 
-    open fun withLicensePlate(licensePlate: String): VehicleTestDataBuilder {
-        this.licensePlate = licensePlate
-        return this
-    }
+    abstract fun withEntryDate(entryDate: Date): VehicleTestDataBuilder
 
-    open fun withEntryDate(entryDate: Date): VehicleTestDataBuilder {
-        this.entryDate = entryDate
-        return this
-    }
-
-    open fun build(): Vehicle {
-        return Vehicle(licensePlate, entryDate)
-    }
+    abstract fun build(): Vehicle
 }
