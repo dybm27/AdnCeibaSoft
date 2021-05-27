@@ -73,18 +73,18 @@ class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueV
         parkingViewModel.getMessage.observe(this, {
             it.getContentIfNotHandled()?.let { message ->
                 toast(message)
-                if (message == ParkingViewModel.VEHICLE_SAVE_MESSAGE) {
-                    if (!validateShowDialog()) {
-                        dialogEnterVehicle.dismiss()
-                    }
+                if (message == ParkingViewModel.VEHICLE_SAVE_MESSAGE && !validateShowDialog()) {
+                    dialogEnterVehicle.dismiss()
+
                 }
             }
         })
-        parkingViewModel.getTotalValue.observe(this, {
-            it.getContentIfNotHandled()?.let { value ->
-                toast("Valor pagado: $value")
-            }
-        })
+        parkingViewModel.getTotalValue.observe(this,
+            {
+                it.getContentIfNotHandled()?.let { value ->
+                    toast("Valor pagado: $value")
+                }
+            })
     }
 
     private fun validateShowDialog(): Boolean {
