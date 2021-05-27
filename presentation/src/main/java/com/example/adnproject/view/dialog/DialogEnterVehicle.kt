@@ -12,16 +12,19 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.example.adnproject.ISaveVehicle
 import com.example.adnproject.R
 import com.example.adnproject.databinding.LayoutDialogVehicleBinding
 import com.example.adnproject.toast
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
-import com.example.domain.entity.Vehicle
 import com.example.domain.exception.DomainException
 import com.example.domain.getCurrentDateTime
 
-class DialogEnterVehicle(private val listener: (vehicle: Vehicle) -> Unit) : DialogFragment() {
+class DialogEnterVehicle : DialogFragment() {
+
+    private lateinit var binding: LayoutDialogVehicleBinding
+    private lateinit var iSaveVehicle: ISaveVehicle
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
@@ -35,7 +38,7 @@ class DialogEnterVehicle(private val listener: (vehicle: Vehicle) -> Unit) : Dia
     }
 
     private fun initView(view: View) {
-        val binding = LayoutDialogVehicleBinding.bind(view)
+        binding = LayoutDialogVehicleBinding.bind(view)
         with(binding) {
             addFilterCaps(binding.etPlateLicense)
             rgVehicleType.setOnCheckedChangeListener { _, checkedId ->
@@ -48,12 +51,12 @@ class DialogEnterVehicle(private val listener: (vehicle: Vehicle) -> Unit) : Dia
             }
             btnCancel.setOnClickListener { dismiss() }
             btnAdd.setOnClickListener {
-                saveVehicle(binding)
+                saveVehicle()
             }
         }
     }
 
-    private fun saveVehicle(binding: LayoutDialogVehicleBinding) {
+    private fun saveVehicle() {
         try {
             val vehicle = if (binding.rbCar.isChecked) {
                 Car(binding.etPlateLicense.text.toString(), getCurrentDateTime())
@@ -61,30 +64,20 @@ class DialogEnterVehicle(private val listener: (vehicle: Vehicle) -> Unit) : Dia
                 Motorcycle(
                     binding.etPlateLicense.text.toString(),
                     getCurrentDateTime(),
-                    binding.etCylinderCapacity.text.toString().toInt()
+                    getNumber()
                 )
             }
-            listener(vehicle)
+            iSaveVehicle.saveVehicle(vehicle)
         } catch (e: DomainException) {
             activity?.toast(e.message)
         }
     }
 
+    private fun getNumber(): Int =
+        if (binding.etCylinderCapacity.text.toString()
+                .isEmpty()
+        ) 0 else binding.etCylinderCapacity.text.toString().toInt()
 
-    private fun validateIsNullOrEmptyEditText(binding: LayoutDialogVehicleBinding): Boolean {
-        var res = false
-        with(binding) {
-            if (etPlateLicense.text.isNullOrEmpty()) {
-                res = true
-            }
-            if (rbMotocycle.isChecked) {
-                if (etCylinderCapacity.text.isNullOrEmpty()) {
-                    res = true
-                }
-            }
-        }
-        return res
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -101,5 +94,9 @@ class DialogEnterVehicle(private val listener: (vehicle: Vehicle) -> Unit) : Dia
         System.arraycopy(editFilters, 0, newFilters, 0, editFilters.size)
         newFilters[editFilters.size] = AllCaps()
         editText.filters = newFilters
+    }
+
+    fun setListener(listener: ISaveVehicle) {
+        iSaveVehicle = listener
     }
 }

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.adnproject.ICalculateTotalValueVehicle
 import com.example.adnproject.R
 import com.example.adnproject.databinding.LayoutItemVehicleBinding
 import com.example.domain.entity.Motorcycle
@@ -13,7 +14,7 @@ import java.util.*
 
 class VehicleAdapter(
     private var vehicles: List<Vehicle>,
-    private val listener: (vehicle: Vehicle) -> Unit
+    private val listener: ICalculateTotalValueVehicle
 ) :
     RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
 
@@ -51,7 +52,7 @@ class VehicleAdapter(
                         visibility = View.GONE
                     }
                 }
-                ivExit.setOnClickListener { listener(vehicle) }
+                ivExit.setOnClickListener { listener.calculateTotalValue(vehicle) }
             }
         }
     }

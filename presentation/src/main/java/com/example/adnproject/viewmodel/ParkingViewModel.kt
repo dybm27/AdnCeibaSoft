@@ -1,8 +1,10 @@
 package com.example.adnproject.viewmodel
 
-
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.adnproject.ISaveVehicle
+import com.example.adnproject.view.dialog.DialogEnterVehicle
 import com.example.domain.entity.Car
 import com.example.domain.entity.Motorcycle
 import com.example.domain.entity.Vehicle
@@ -14,21 +16,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
 class ParkingViewModel @Inject constructor(
     private val parkingService: ParkingService
 ) :
     ViewModel() {
-    private val _vehicles = MutableLiveData<List<Vehicle>>()
-    val vehicles = _vehicles
-    private val _cantCars = MutableLiveData<Int>()
-    val cantCars = _cantCars
-    private val _cantMotorcycles = MutableLiveData<Int>()
-    val cantMotorcycles = _cantMotorcycles
-    private val _totalValue = MutableLiveData<Int>()
-    val totalValue = _totalValue
-    private val _message = MutableLiveData<String>()
-    val message = _message
+    val vehicles = MutableLiveData<List<Vehicle>>()
+    val cantCars = MutableLiveData<Int>()
+    val cantMotorcycles = MutableLiveData<Int>()
+    val totalValue = MutableLiveData<Int>()
+    val message = MutableLiveData<String>()
+    val dialog = DialogEnterVehicle()
 
     companion object {
         const val VEHICLE_SAVE_MESSAGE = "Vehículo guardado con éxito."

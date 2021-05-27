@@ -2,10 +2,11 @@ package com.example.adnproject.view
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.adnproject.ICalculateTotalValueVehicle
+import com.example.adnproject.ISaveVehicle
 import com.example.adnproject.R
 import com.example.adnproject.databinding.ActivityMainBinding
 import com.example.adnproject.toast
@@ -16,11 +17,10 @@ import com.example.domain.entity.Vehicle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ParkingActivity : AppCompatActivity() {
+class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueVehicle {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: VehicleAdapter
-    private lateinit var dialogEnterVehicle: DialogEnterVehicle
     private val parkingViewModel: ParkingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,31 +34,21 @@ class ParkingActivity : AppCompatActivity() {
     }
 
     private fun initDialog() {
-        dialogEnterVehicle = DialogEnterVehicle { vehicle -> addVehicle(vehicle) }
-        dialogEnterVehicle.isCancelable = false
+        parkingViewModel.dialog.setListener(this)
+        parkingViewModel.dialog.isCancelable = false
     }
 
     private fun initView() {
-        adapter = VehicleAdapter(listOf()) { vehicle ->
-            calculateTotalValue(vehicle)
-        }
+        adapter = VehicleAdapter(listOf(),this)
         with(binding) {
             btnEnterVehicle.setOnClickListener {
                 if (validateShowDialog()) {
-                    dialogEnterVehicle.show(supportFragmentManager, "enterVehicle")
+                    parkingViewModel.dialog.show(supportFragmentManager, "enterVehicle")
                 }
             }
             rvVehicles.layoutManager = LinearLayoutManager(this@ParkingActivity)
             rvVehicles.adapter = adapter
         }
-    }
-
-    private fun addVehicle(vehicle: Vehicle) {
-        parkingViewModel.saveVehicle(vehicle)
-    }
-
-    private fun calculateTotalValue(vehicle: Vehicle) {
-        parkingViewModel.calculateTotalValue(vehicle)
     }
 
     private fun initViewModel() {
@@ -86,13 +76,21 @@ class ParkingActivity : AppCompatActivity() {
             toast(it)
             if (it == ParkingViewModel.VEHICLE_SAVE_MESSAGE) {
                 if (!validateShowDialog()) {
-                    dialogEnterVehicle.dismiss()
+                    parkingViewModel.dialog.dismiss()
                 }
             }
         })
     }
 
     private fun validateShowDialog(): Boolean {
-        return !dialogEnterVehicle.isAdded && !dialogEnterVehicle.isVisible
+        return !parkingViewModel.dialog.isAdded && !parkingViewModel.dialog.isVisible
+    }
+
+    override fun saveVehicle(vehicle: Vehicle) {
+        parkingViewModel.saveVehicle(vehicle)
+    }
+
+    override fun calculateTotalValue(vehicle: Vehicle) {
+        parkingViewModel.calculateTotalValue(vehicle)
     }
 }
