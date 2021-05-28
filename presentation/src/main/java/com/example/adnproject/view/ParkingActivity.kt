@@ -6,46 +6,47 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.adnproject.ICalculateTotalValueVehicle
-import com.example.adnproject.ISaveVehicle
+import com.example.adnproject.IDialogVehicle
 import com.example.adnproject.R
 import com.example.adnproject.databinding.ActivityMainBinding
+import com.example.adnproject.databinding.LayoutDialogVehicleBinding
 import com.example.adnproject.toast
 import com.example.adnproject.view.adapter.VehicleAdapter
 import com.example.adnproject.view.dialog.DialogEnterVehicle
 import com.example.adnproject.viewmodel.ParkingViewModel
+import com.example.domain.exception.DomainException
+import com.example.domain.getCurrentDateTime
+import com.example.domain.vehicle.entity.Car
+import com.example.domain.vehicle.entity.Motorcycle
 import com.example.domain.vehicle.entity.Vehicle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueVehicle {
+class ParkingActivity : AppCompatActivity(), IDialogVehicle, ICalculateTotalValueVehicle {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: VehicleAdapter
-    private lateinit var dialogEnterVehicle: DialogEnterVehicle
     private val parkingViewModel: ParkingViewModel by viewModels()
+    private lateinit var dialogEnterVehicle: DialogEnterVehicle
+
+    companion object {
+        private const val DIALOG_TAG = "enterVehicle"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        initDialog()
         initView()
         initViewModel()
         parkingViewModel.getVehicles()
-    }
-
-    private fun initDialog() {
-        dialogEnterVehicle = DialogEnterVehicle.newInstance().setCallback(this)
-        dialogEnterVehicle.isCancelable = false
     }
 
     private fun initView() {
         adapter = VehicleAdapter(listOf(), this)
         with(binding) {
             btnEnterVehicle.setOnClickListener {
-                if (validateShowDialog()) {
-                    dialogEnterVehicle.show(supportFragmentManager, "enterVehicle")
-                }
+                DialogEnterVehicle().show(supportFragmentManager, DIALOG_TAG)
             }
             rvVehicles.layoutManager = LinearLayoutManager(this@ParkingActivity)
             rvVehicles.adapter = adapter
@@ -73,9 +74,8 @@ class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueV
         parkingViewModel.getMessage.observe(this, {
             it.getContentIfNotHandled()?.let { message ->
                 toast(message)
-                if (message == ParkingViewModel.VEHICLE_SAVE_MESSAGE && !validateShowDialog()) {
+                if (ParkingViewModel.VEHICLE_SAVE_MESSAGE == message) {
                     dialogEnterVehicle.dismiss()
-
                 }
             }
         })
@@ -87,15 +87,16 @@ class ParkingActivity : AppCompatActivity(), ISaveVehicle, ICalculateTotalValueV
             })
     }
 
-    private fun validateShowDialog(): Boolean {
-        return !dialogEnterVehicle.isAdded && !dialogEnterVehicle.isVisible
+    override fun calculateTotalValue(vehicle: Vehicle) {
+        parkingViewModel.calculateTotalValue(vehicle)
     }
 
-    override fun saveVehicle(vehicle: Vehicle) {
+    override fun onclickButtonAdd(vehicle: Vehicle, dialogEnterVehicle: DialogEnterVehicle) {
+        this.dialogEnterVehicle = dialogEnterVehicle
         parkingViewModel.saveVehicle(vehicle)
     }
 
-    override fun calculateTotalValue(vehicle: Vehicle) {
-        parkingViewModel.calculateTotalValue(vehicle)
+    override fun onclickButtonCancel(dialogEnterVehicle: DialogEnterVehicle) {
+        dialogEnterVehicle.dismiss()
     }
 }

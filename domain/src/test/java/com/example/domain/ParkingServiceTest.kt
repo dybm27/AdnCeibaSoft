@@ -3,7 +3,7 @@ package com.example.domain
 import com.example.domain.databuilder.CarTestDataBuilder
 import com.example.domain.databuilder.MotorcycleTestDataBuilder
 import com.example.domain.exception.DomainException
-import com.example.domain.parking.service.ParkingService
+import com.example.domain.vehicle.service.ParkingService
 import com.example.domain.parking.valueobject.Parking
 import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.vehicle.repository.CarRepository

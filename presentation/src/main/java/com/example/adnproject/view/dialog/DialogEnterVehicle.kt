@@ -1,6 +1,7 @@
 package com.example.adnproject.view.dialog
 
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,40 +11,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.adnproject.ISaveVehicle
-import com.example.adnproject.R
+import com.example.adnproject.IDialogVehicle
 import com.example.adnproject.databinding.LayoutDialogVehicleBinding
 import com.example.adnproject.toast
-import com.example.domain.vehicle.entity.Car
-import com.example.domain.vehicle.entity.Motorcycle
 import com.example.domain.exception.DomainException
 import com.example.domain.getCurrentDateTime
+import com.example.domain.vehicle.entity.Car
+import com.example.domain.vehicle.entity.Motorcycle
+
 
 class DialogEnterVehicle : DialogFragment() {
 
-    private lateinit var binding: LayoutDialogVehicleBinding
-    private lateinit var iSaveVehicle: ISaveVehicle
+    private lateinit var listener: IDialogVehicle
+    private var _binding: LayoutDialogVehicleBinding? = null
+    private val binding get() = _binding!!
 
-    companion object {
-        fun newInstance(): DialogEnterVehicle = DialogEnterVehicle()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        _binding = LayoutDialogVehicleBinding.inflate(inflater, container, false)
+        initView()
+        return binding.root
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         isCancelable = false
-        return activity?.let {
-            val builder = AlertDialog.Builder(it)
-            val view =
-                requireActivity().layoutInflater.inflate(R.layout.layout_dialog_vehicle, null)
-            initView(view)
-            builder.setView(view)
-            builder.create()
-        } ?: throw IllegalStateException("Activity cannot be null")
+        return super.onCreateDialog(savedInstanceState)
     }
 
-    private fun initView(view: View) {
-        binding = LayoutDialogVehicleBinding.bind(view)
+    private fun initView() {
         with(binding) {
             addFilterCaps(binding.etPlateLicense)
             rgVehicleType.setOnCheckedChangeListener { _, checkedId ->
@@ -54,7 +54,7 @@ class DialogEnterVehicle : DialogFragment() {
                     lyCylinderCapacity.visibility = View.VISIBLE
                 }
             }
-            btnCancel.setOnClickListener { dismiss() }
+            btnCancel.setOnClickListener { listener.onclickButtonCancel(this@DialogEnterVehicle) }
             btnAdd.setOnClickListener {
                 saveVehicle()
             }
@@ -72,7 +72,7 @@ class DialogEnterVehicle : DialogFragment() {
                     getNumber()
                 )
             }
-            iSaveVehicle.saveVehicle(vehicle)
+            listener.onclickButtonAdd(vehicle, this@DialogEnterVehicle)
         } catch (e: DomainException) {
             activity?.toast(e.message)
         }
@@ -83,16 +83,6 @@ class DialogEnterVehicle : DialogFragment() {
                 .isEmpty()
         ) 0 else binding.etCylinderCapacity.text.toString().toInt()
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     private fun addFilterCaps(editText: EditText) {
         val editFilters = editText.filters
         val newFilters = arrayOfNulls<InputFilter>(editFilters.size + 1)
@@ -101,8 +91,17 @@ class DialogEnterVehicle : DialogFragment() {
         editText.filters = newFilters
     }
 
-    fun setCallback(callback: ISaveVehicle): DialogEnterVehicle {
-        iSaveVehicle = callback
-        return this
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            listener = context as IDialogVehicle
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$context must implement mainFragmentCallback")
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

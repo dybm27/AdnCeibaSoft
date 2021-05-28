@@ -1,4 +1,4 @@
-package com.example.domain.parking.service
+package com.example.domain.vehicle.service
 
 import com.example.domain.vehicle.entity.Car
 import com.example.domain.vehicle.entity.Motorcycle

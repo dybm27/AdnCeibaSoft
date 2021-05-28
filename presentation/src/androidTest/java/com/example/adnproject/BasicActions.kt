@@ -11,6 +11,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.example.adnproject.view.adapter.VehicleAdapter
+import com.example.adnproject.view.viewholder.VehicleViewHolder
 import org.hamcrest.Matcher
 
 
@@ -42,8 +43,8 @@ open class BasicActions {
     ) {
         onView(withId(idResourceRecyclerView))
             .perform(
-                RecyclerViewActions.scrollToPosition<VehicleAdapter.VehicleViewHolder>(position),
-                RecyclerViewActions.actionOnItemAtPosition<VehicleAdapter.VehicleViewHolder>(
+                RecyclerViewActions.scrollToPosition<VehicleViewHolder>(position),
+                RecyclerViewActions.actionOnItemAtPosition<VehicleViewHolder>(
                     position,
                     customActionClick(idResourceItem)
                 )

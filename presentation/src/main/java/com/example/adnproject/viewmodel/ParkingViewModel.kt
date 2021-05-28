@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.exception.DomainException
-import com.example.domain.parking.service.ParkingService
+import com.example.domain.vehicle.service.ParkingService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

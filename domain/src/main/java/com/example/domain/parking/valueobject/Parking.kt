@@ -1,7 +1,6 @@
 package com.example.domain.parking.valueobject
 
 import com.example.domain.exception.DomainException
-import com.example.domain.parking.service.ParkingService
 import com.example.domain.vehicle.entity.Vehicle
 
 class Parking {
