@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/tvEmptyView"
+        android:id="@+id/text_view_parking_activity_empty_view"
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,16 +23,16 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvVehicles"
+        android:id="@+id/recycler_view_parking_activity_vehicles"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnEnterVehicle"
+        app:layout_constraintBottom_toTopOf="@+id/button_parking_activity_enter_vehicle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnEnterVehicle"
+        android:id="@+id/button_parking_activity_enter_vehicle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -41,30 +41,30 @@
         android:text="Ingresar Vehículo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvCantCars"
-        app:layout_constraintTop_toBottomOf="@+id/rvVehicles" />
+        app:layout_constraintStart_toEndOf="@+id/text_view_parking_activity_cant_cars"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view_parking_activity_vehicles" />
 
 
     <TextView
-        android:id="@+id/tvCantCars"
+        android:id="@+id/text_view_parking_activity_cant_cars"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Carros: 0"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnEnterVehicle"
+        app:layout_constraintEnd_toStartOf="@+id/button_parking_activity_enter_vehicle"
         app:layout_constraintHorizontal_bias="0.45"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvVehicles"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view_parking_activity_vehicles"
         app:layout_constraintVertical_bias="0.3" />
 
     <TextView
-        android:id="@+id/tvCantMotorcycles"
+        android:id="@+id/text_view_parking_activity_cant_motorcycles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Motocicletas: 0"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnEnterVehicle"
+        app:layout_constraintEnd_toStartOf="@+id/button_parking_activity_enter_vehicle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvVehicles"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view_parking_activity_vehicles"
         app:layout_constraintVertical_bias="0.7" />
 </androidx.constraintlayout.widget.ConstraintLayout>

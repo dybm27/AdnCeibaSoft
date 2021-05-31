@@ -15,19 +15,19 @@ class VehicleViewHolder(view: View, private val listener: ICalculateTotalValueVe
     fun bind(vehicle: Vehicle) {
         val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
         with(binding) {
-            tvLicensePlate.text = vehicle.licensePlate
-            tvEntryDate.text = simpleDateFormat.format(vehicle.entryDate)
-            with(lyCylinderCapacity) {
+            textViewItemVehicleLicensePlate.text = vehicle.licensePlate
+            textViewItemVehicleEntryDate.text = simpleDateFormat.format(vehicle.entryDate)
+            with(linearLayoutItemVehicleCylinderCapacity) {
                 if (vehicle is Motorcycle) {
-                    tvVehicleType.text = "Motocicleta"
+                    textViewItemVehicleVehicleType.text = "Motocicleta"
                     visibility = View.VISIBLE
-                    tvCylinderCapacity.text = vehicle.cylinderCapacity.toString()
+                    textViewItemVehicleCylinderCapacity.text = vehicle.cylinderCapacity.toString()
                 } else {
-                    tvVehicleType.text = "Carro"
+                    textViewItemVehicleVehicleType.text = "Carro"
                     visibility = View.GONE
                 }
             }
-            ivExit.setOnClickListener { listener.calculateTotalValue(vehicle) }
+            imageViewItemVehicleExit.setOnClickListener { listener.calculateTotalValue(vehicle) }
         }
     }
 }

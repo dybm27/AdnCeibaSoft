@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.example.adnproject.IDialogVehicle
-import com.example.adnproject.databinding.LayoutDialogVehicleBinding
+import com.example.adnproject.databinding.LayoutDialogAddVehicleBinding
 import com.example.adnproject.toast
 import com.example.domain.exception.DomainException
 import com.example.domain.getCurrentDateTime
@@ -21,19 +21,19 @@ import com.example.domain.vehicle.entity.Car
 import com.example.domain.vehicle.entity.Motorcycle
 
 
-class DialogEnterVehicle : DialogFragment() {
+class DialogAddVehicle : DialogFragment() {
 
     private lateinit var listener: IDialogVehicle
-    private var _binding: LayoutDialogVehicleBinding? = null
+    private var _binding: LayoutDialogAddVehicleBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        _binding = LayoutDialogVehicleBinding.inflate(inflater, container, false)
+        _binding = LayoutDialogAddVehicleBinding.inflate(inflater, container, false)
         initView()
         return binding.root
     }
@@ -45,17 +45,17 @@ class DialogEnterVehicle : DialogFragment() {
 
     private fun initView() {
         with(binding) {
-            addFilterCaps(binding.etPlateLicense)
-            rgVehicleType.setOnCheckedChangeListener { _, checkedId ->
-                if (checkedId == rbCar.id) {
-                    etCylinderCapacity.setText("")
-                    lyCylinderCapacity.visibility = View.GONE
+            addFilterCaps(binding.textInputEditTextDialogAddVehiclePlateLicense)
+            radioGroupDialogAddVehicleVehicleType.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId == radioButtonDialogAddVehicleCar.id) {
+                    textInputEditTextDialogAddVehicleCylinderCapacity.setText("")
+                    textInputLayoutDialogAddVehicleCylinderCapacity.visibility = View.GONE
                 } else {
-                    lyCylinderCapacity.visibility = View.VISIBLE
+                    textInputLayoutDialogAddVehicleCylinderCapacity.visibility = View.VISIBLE
                 }
             }
-            btnCancel.setOnClickListener { listener.onclickButtonCancel(this@DialogEnterVehicle) }
-            btnAdd.setOnClickListener {
+            buttonDialogAddVehicleCancel.setOnClickListener { listener.onclickButtonCancel(this@DialogAddVehicle) }
+            buttonDialogAddVehicleAdd.setOnClickListener {
                 saveVehicle()
             }
         }
@@ -63,25 +63,25 @@ class DialogEnterVehicle : DialogFragment() {
 
     private fun saveVehicle() {
         try {
-            val vehicle = if (binding.rbCar.isChecked) {
-                Car(binding.etPlateLicense.text.toString(), getCurrentDateTime())
+            val vehicle = if (binding.radioButtonDialogAddVehicleCar.isChecked) {
+                Car(binding.textInputEditTextDialogAddVehiclePlateLicense.text.toString(), getCurrentDateTime())
             } else {
                 Motorcycle(
-                    binding.etPlateLicense.text.toString(),
+                    binding.textInputEditTextDialogAddVehiclePlateLicense.text.toString(),
                     getCurrentDateTime(),
                     getNumber()
                 )
             }
-            listener.onclickButtonAdd(vehicle, this@DialogEnterVehicle)
+            listener.onclickButtonAdd(vehicle, this@DialogAddVehicle)
         } catch (e: DomainException) {
             activity?.toast(e.message)
         }
     }
 
     private fun getNumber(): Int =
-        if (binding.etCylinderCapacity.text.toString()
+        if (binding.textInputEditTextDialogAddVehicleCylinderCapacity.text.toString()
                 .isEmpty()
-        ) 0 else binding.etCylinderCapacity.text.toString().toInt()
+        ) 0 else binding.textInputEditTextDialogAddVehicleCylinderCapacity.text.toString().toInt()
 
     private fun addFilterCaps(editText: EditText) {
         val editFilters = editText.filters

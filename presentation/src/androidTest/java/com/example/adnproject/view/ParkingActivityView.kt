@@ -6,10 +6,10 @@ import com.example.adnproject.R
 
 class ParkingActivityView : BasicActions() {
     companion object {
-        val textViewEmptyView = R.id.tvEmptyView
-        val textViewCantCars = R.id.tvCantCars
-        val textViewCantMotorcycles = R.id.tvCantMotorcycles
-        val recyclerViewVehicles = R.id.rvVehicles
-        val buttonEnterVehicle = R.id.btnEnterVehicle
+        val textViewEmptyView = R.id.text_view_parking_activity_empty_view
+        val textViewCantCars = R.id.text_view_parking_activity_cant_cars
+        val textViewCantMotorcycles = R.id.text_view_parking_activity_cant_motorcycles
+        val recyclerViewVehicles = R.id.recycler_view_parking_activity_vehicles
+        val buttonEnterVehicle = R.id.button_parking_activity_enter_vehicle
     }
 }

@@ -9,15 +9,10 @@ import com.example.adnproject.ICalculateTotalValueVehicle
 import com.example.adnproject.IDialogVehicle
 import com.example.adnproject.R
 import com.example.adnproject.databinding.ActivityMainBinding
-import com.example.adnproject.databinding.LayoutDialogVehicleBinding
 import com.example.adnproject.toast
 import com.example.adnproject.view.adapter.VehicleAdapter
-import com.example.adnproject.view.dialog.DialogEnterVehicle
+import com.example.adnproject.view.dialog.DialogAddVehicle
 import com.example.adnproject.viewmodel.ParkingViewModel
-import com.example.domain.exception.DomainException
-import com.example.domain.getCurrentDateTime
-import com.example.domain.vehicle.entity.Car
-import com.example.domain.vehicle.entity.Motorcycle
 import com.example.domain.vehicle.entity.Vehicle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,7 +22,7 @@ class ParkingActivity : AppCompatActivity(), IDialogVehicle, ICalculateTotalValu
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: VehicleAdapter
     private val parkingViewModel: ParkingViewModel by viewModels()
-    private lateinit var dialogEnterVehicle: DialogEnterVehicle
+    private lateinit var dialogAddVehicle: DialogAddVehicle
 
     companion object {
         private const val DIALOG_TAG = "enterVehicle"
@@ -45,37 +40,37 @@ class ParkingActivity : AppCompatActivity(), IDialogVehicle, ICalculateTotalValu
     private fun initView() {
         adapter = VehicleAdapter(listOf(), this)
         with(binding) {
-            btnEnterVehicle.setOnClickListener {
-                DialogEnterVehicle().show(supportFragmentManager, DIALOG_TAG)
+            buttonParkingActivityEnterVehicle.setOnClickListener {
+                DialogAddVehicle().show(supportFragmentManager, DIALOG_TAG)
             }
-            rvVehicles.layoutManager = LinearLayoutManager(this@ParkingActivity)
-            rvVehicles.adapter = adapter
+            recyclerViewParkingActivityVehicles.layoutManager = LinearLayoutManager(this@ParkingActivity)
+            recyclerViewParkingActivityVehicles.adapter = adapter
         }
     }
 
     private fun initViewModel() {
         parkingViewModel.vehicles.observe(this, { list ->
             if (list.isEmpty()) {
-                binding.tvEmptyView.visibility = View.VISIBLE
-                binding.rvVehicles.visibility = View.INVISIBLE
+                binding.textViewParkingActivityEmptyView.visibility = View.VISIBLE
+                binding.recyclerViewParkingActivityVehicles.visibility = View.INVISIBLE
             } else {
-                binding.tvEmptyView.visibility = View.GONE
-                binding.rvVehicles.visibility = View.VISIBLE
+                binding.textViewParkingActivityEmptyView.visibility = View.GONE
+                binding.recyclerViewParkingActivityVehicles.visibility = View.VISIBLE
                 adapter.setAdapterData(list)
             }
         })
         parkingViewModel.cantCars.observe(this, {
-            binding.tvCantCars.text = String.format(getString(R.string.cant_cars), it);
+            binding.textViewParkingActivityCantCars.text = String.format(getString(R.string.cant_cars), it);
         })
         parkingViewModel.cantMotorcycles.observe(this, {
-            binding.tvCantMotorcycles.text =
+            binding.textViewParkingActivityCantMotorcycles.text =
                 String.format(getString(R.string.cant_motorcycles), it);
         })
         parkingViewModel.getMessage.observe(this, {
             it.getContentIfNotHandled()?.let { message ->
                 toast(message)
                 if (ParkingViewModel.VEHICLE_SAVE_MESSAGE == message) {
-                    dialogEnterVehicle.dismiss()
+                    dialogAddVehicle.dismiss()
                 }
             }
         })
@@ -91,12 +86,12 @@ class ParkingActivity : AppCompatActivity(), IDialogVehicle, ICalculateTotalValu
         parkingViewModel.calculateTotalValue(vehicle)
     }
 
-    override fun onclickButtonAdd(vehicle: Vehicle, dialogEnterVehicle: DialogEnterVehicle) {
-        this.dialogEnterVehicle = dialogEnterVehicle
+    override fun onclickButtonAdd(vehicle: Vehicle, dialogAddVehicle: DialogAddVehicle) {
+        this.dialogAddVehicle = dialogAddVehicle
         parkingViewModel.saveVehicle(vehicle)
     }
 
-    override fun onclickButtonCancel(dialogEnterVehicle: DialogEnterVehicle) {
-        dialogEnterVehicle.dismiss()
+    override fun onclickButtonCancel(dialogAddVehicle: DialogAddVehicle) {
+        dialogAddVehicle.dismiss()
     }
 }

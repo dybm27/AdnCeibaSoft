@@ -30,20 +30,20 @@
                 android:textStyle="bold" />
 
             <RadioGroup
-                android:id="@+id/rgVehicleType"
+                android:id="@+id/radio_group_dialog_add_vehicle_vehicle_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/rbCar"
+                    android:id="@+id/radio_button_dialog_add_vehicle_car"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="true"
                     android:text="Carro" />
 
                 <RadioButton
-                    android:id="@+id/rbMotocycle"
+                    android:id="@+id/radio_button_dialog_add_vehicle_motorcycle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="false"
@@ -57,7 +57,7 @@
             android:hint="Placa">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPlateLicense"
+                android:id="@+id/text_input_edit_text_dialog_add_vehicle_plate_license"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:digits="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890"
@@ -65,7 +65,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/lyCylinderCapacity"
+            android:id="@+id/text_input_layout_dialog_add_vehicle_cylinder_capacity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -73,7 +73,7 @@
             android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCylinderCapacity"
+                android:id="@+id/text_input_edit_text_dialog_add_vehicle_cylinder_capacity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
@@ -87,14 +87,14 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnCancel"
+                android:id="@+id/button_dialog_add_vehicle_cancel"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cancelar" />
 
             <Button
-                android:id="@+id/btnAdd"
+                android:id="@+id/button_dialog_add_vehicle_add"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
