@@ -10,59 +10,6 @@ import org.junit.Test
 class MotorcycleTest {
 
     @Test
-    fun calculateTotalValueVehicle_cylinderCapacityLessThan500() {
-        //Arrange
-        val entryDate = createDate("21/05/2021 15:15:15")
-        val departureDate = createDate("25/05/2021 22:50:15")
-        val motorcycle = MotorcycleTestDataBuilder().withEntryDate(entryDate).build()
-        //Act
-        val res = motorcycle.calculateTotalValueVehicle(departureDate)
-        //Assert
-        Assert.assertEquals(
-            ((4 * Parking.PRICE_DAY_MOTORCYCLE) + (7 * Parking.PRICE_HOUR_MOTORCYCLE)),
-            res
-        )
-    }
-
-    @Test
-    fun calculateTotalValueVehicle_cylinderCapacityGreaterThan500() {
-        //Arrange
-        val entryDate = createDate("21/05/2021 15:15:15")
-        val departureDate = createDate("25/05/2021 22:50:15")
-        val motorcycle =
-            MotorcycleTestDataBuilder().withEntryDate(entryDate).withCylinderCapacity(501).build()
-        //Act
-        val res = motorcycle.calculateTotalValueVehicle(departureDate)
-        //Assert
-        Assert.assertEquals(
-            ((4 * Parking.PRICE_DAY_MOTORCYCLE) + (7 * Parking.PRICE_HOUR_MOTORCYCLE)) + Parking.MOTORCYCLE_SURPLUS,
-            res
-        )
-    }
-
-    @Test
-    fun validateIfSurplusIsCharged() {
-        //Arrange
-        val motorcycle =
-            MotorcycleTestDataBuilder().withCylinderCapacity(501).build()
-        //Act
-        val res = motorcycle.surplus()
-        //Assert
-        Assert.assertEquals(Parking.MOTORCYCLE_SURPLUS, res)
-    }
-
-    @Test
-    fun validateIfNoSurplusIsCharged() {
-        //Arrange
-        val motorcycle =
-            MotorcycleTestDataBuilder().withCylinderCapacity(500).build()
-        //Act
-        val res = motorcycle.surplus()
-        //Assert
-        Assert.assertEquals(0, res)
-    }
-
-    @Test
     fun validateCylinderCapacityLessThan50() {
         try {
             //Arrange
