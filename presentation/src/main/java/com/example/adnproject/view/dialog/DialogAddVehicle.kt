@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.DialogFragment
-import com.example.adnproject.IDialogVehicle
+import com.example.adnproject.interfaces.IDialogVehicle
 import com.example.adnproject.databinding.LayoutDialogAddVehicleBinding
 import com.example.adnproject.toast
 import com.example.domain.exception.DomainException

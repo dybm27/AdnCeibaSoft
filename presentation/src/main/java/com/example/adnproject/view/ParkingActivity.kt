@@ -5,8 +5,8 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.adnproject.ICalculateTotalValueVehicle
-import com.example.adnproject.IDialogVehicle
+import com.example.adnproject.interfaces.ICalculateTotalValueVehicle
+import com.example.adnproject.interfaces.IDialogVehicle
 import com.example.adnproject.R
 import com.example.adnproject.databinding.ActivityMainBinding
 import com.example.adnproject.toast

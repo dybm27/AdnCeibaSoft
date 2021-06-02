@@ -2,7 +2,7 @@ package com.example.adnproject.view.viewholder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.example.adnproject.ICalculateTotalValueVehicle
+import com.example.adnproject.interfaces.ICalculateTotalValueVehicle
 import com.example.adnproject.databinding.LayoutItemVehicleBinding
 import com.example.domain.vehicle.entity.Motorcycle
 import com.example.domain.vehicle.entity.Vehicle

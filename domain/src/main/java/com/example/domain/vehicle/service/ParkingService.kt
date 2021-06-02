@@ -1,63 +1,42 @@
 package com.example.domain.vehicle.service
 
-import com.example.domain.vehicle.entity.Car
-import com.example.domain.vehicle.entity.Motorcycle
-import com.example.domain.parking.valueobject.Parking
-import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.exception.DomainException
-import com.example.domain.getCurrentDateTime
+import com.example.domain.parking.valueobject.Parking
+import com.example.domain.vehicle.patternvisitor.CalculateTotalValueVehicleVisitor
+import com.example.domain.vehicle.patternvisitor.DeleteVehicleVisitor
+import com.example.domain.vehicle.patternvisitor.SaveVehicleVisitor
+import com.example.domain.vehicle.entity.Vehicle
 import com.example.domain.vehicle.repository.CarRepository
 import com.example.domain.vehicle.repository.MotorcycleRepository
-import com.example.domain.today
-import java.util.Date
 import javax.inject.Inject
 
 class ParkingService @Inject constructor(
-    private val carRepository: CarRepository,
-    private val motorcycleRepository: MotorcycleRepository
+    val carRepository: CarRepository,
+    val motorcycleRepository: MotorcycleRepository
 ) {
-    private val parking: Parking = Parking()
+    val parking: Parking = Parking()
+    private val calculateTotalValueVisitor = CalculateTotalValueVehicleVisitor(this)
+    private val saveVehicleVisitor = SaveVehicleVisitor(this)
+    private val deleteVehicleVisitor = DeleteVehicleVisitor(this)
 
     companion object {
         const val VEHICLE_NOT_SAVE_MESSAGE = "Ya hay un vehículo con esa placa."
     }
 
-    fun saveVehicle(vehicle: Vehicle, today: Int = today()) {
+    fun saveVehicle(vehicle: Vehicle) {
         if (validateExistingVehicle(vehicle)) {
             throw DomainException(VEHICLE_NOT_SAVE_MESSAGE)
         }
-        when (vehicle) {
-            is Car -> {
-                val numberOfCar = getAmountCars()
-                parking.validateVehicleEntry(vehicle, numberOfCar, today)
-                carRepository.saveCar(vehicle)
-            }
-            is Motorcycle -> {
-                val numberOfMotorcycle = getAmountMotorcycles()
-                parking.validateVehicleEntry(vehicle, numberOfMotorcycle, today)
-                motorcycleRepository.saveMotorcycle(vehicle)
-            }
-        }
-
+        vehicle.accept(saveVehicleVisitor)
     }
 
     fun deleteVehicle(vehicle: Vehicle) {
-        when (vehicle) {
-            is Car -> {
-                carRepository.deleteCar(vehicle)
-            }
-            is Motorcycle -> {
-                motorcycleRepository.deleteMotorcycle(vehicle)
-            }
-        }
+        vehicle.accept(deleteVehicleVisitor)
     }
 
-    fun calculateTotalValueVehicle(
-        vehicle: Vehicle,
-        departureDate: Date = getCurrentDateTime()
-    ): Int {
-        return vehicle.calculateTotalValueVehicle(departureDate)
-    }
+    fun calculateTotalValueVehicle(vehicle: Vehicle): Int =
+        vehicle.accept(calculateTotalValueVisitor)
+
 
     fun getVehicles(): List<Vehicle> {
         val vehiclesList = mutableListOf<Vehicle>()

@@ -1,4 +1,4 @@
-package com.example.adnproject
+package com.example.adnproject.interfaces
 
 import com.example.domain.vehicle.entity.Vehicle
 

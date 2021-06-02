@@ -1,17 +1,12 @@
 package com.example.adnproject.view.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.adnproject.ICalculateTotalValueVehicle
+import com.example.adnproject.interfaces.ICalculateTotalValueVehicle
 import com.example.adnproject.R
-import com.example.adnproject.databinding.LayoutItemVehicleBinding
 import com.example.adnproject.view.viewholder.VehicleViewHolder
-import com.example.domain.vehicle.entity.Motorcycle
 import com.example.domain.vehicle.entity.Vehicle
-import java.text.SimpleDateFormat
-import java.util.*
 
 class VehicleAdapter(
     private var vehicles: List<Vehicle>,
